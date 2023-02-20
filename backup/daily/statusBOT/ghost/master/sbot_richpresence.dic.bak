@@ -17,19 +17,19 @@ OnDRPMenu
 {
 	"\0\b2Discord Rich Presence\n\n"
 	--
-	'\![*] \q[Change Status,OnDRPSelect]\n[150]'
+	'\![*] \q[Change Status,OnDRPSelect]\n\n[half]'
 	--
-	"\![*] \q[Change DevStatus,OnDevStatMenu]\n[150]"
+	"\![*] \q[Change DevStatus,OnDevStatMenu]\n\n[half]"
 	--
-	"\![*] \q[Set Mood,OnDRPMoodMenu]\n[150]"
+	"\![*] \q[Set Mood,OnDRPMoodMenu]\n\n[half]"
 	--
 	if InDiscordPluginCustom == 1
 	{
-		"\f[color,#fb0300]\![*] \q[Force Update,OnDiscordPluginCustom] \f[color,default]\n[150]"
+		"\f[color,#fb0300]\![*] \q[Force Update,OnDiscordPluginCustom] \f[color,default]\n\n[half]"
 	}
 	else
 	{
-		"\![*] \q[Turn On,OnDiscordPluginCustom]\n[150]"
+		"\![*] \q[Turn On,OnDiscordPluginCustom]\n\n[half]"
 	}
 	--
 	if reference0 == "menu"
@@ -54,20 +54,9 @@ OnDRPSelect
 OnDRPSet
 {
 	drpstatus = SANITISE(reference0)
-	DiscordCustom.UserDetail
+	"\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomDetail,%(drpstatus)]"
 }
 
-DiscordCustom.UserDetail
-{
-	if !InDiscordPluginCustom
-	{
-		return
-	}
-	else
-	{
-		DiscordCustomSet.CustomDetail(drpstatus)
-	}
-}
 
 
 // ---- Setting Dev Information ----
@@ -104,6 +93,8 @@ OnDevType
 	else
 	{devstate = reference0}
 	--
+	"\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomSmallImageKey,%(devstate)]"
+	--
 	if devstate == "SHELL" || devstate == "CODE" || devstate == "WRITE"
 	{"\n\nEnter Development Status Message:\x\![open,inputbox,OnDevSet]"}
 }
@@ -112,6 +103,7 @@ OnDevType
 OnDevSet
 {
 	_cleanRef = SANITISE(reference0)
+	smallImageCaption = _cleanRef
 	
 	if reference2 == "naming"
 	{
@@ -126,16 +118,14 @@ OnDevSet
 			"\0\s[0]Name and development status set.\e"
 		}
 	}
-	elseif _cleanRef == ""
-	{smallImageCaption = ""}
 	else
 	{
-		"Status set to : %(_cleanRef)"
-		--
-		smallImageCaption = _cleanRef
+		"Status set to : %(smallImageCaption)"
 	}
 	--
-	DiscordCustom.DeveloperSet
+	
+	--
+	"\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomSmallImageText,%(smallImageCaption)]"
 }
 
 // Plugin does the work
@@ -191,7 +181,7 @@ OnDRPMoodMenu	// See OnDRPMoodSet, line
 	{"\f[color,#00ffcc]\![*]\q[Tired,OnDRPMoodSet,mood_tired,tired]\f[color,default]"}
 	else{"\![*]\q[Tired,OnDRPMoodSet,mood_tired,tired]"}
 	--
-	"\n[150]"
+	"\n\n[half]"
 	--
 	if "angry" _in_ moodImageText
 	{"\f[color,#00ffcc]\![*]\q[Angry,OnDRPMoodSet,mood_angry,angry]  \f[color,default]"}
@@ -205,7 +195,7 @@ OnDRPMoodMenu	// See OnDRPMoodSet, line
 	{"\f[color,#00ffcc]\![*]\q[Surprised,OnDRPMoodSet,mood_surprised,surprised]\f[color,default]"}
 	else{"\![*]\q[Surprised,OnDRPMoodSet,mood_surprised,surprised]"}
 	--
-	"\n[150]"
+	"\n\n[half]"
 	--
 	if "scared" _in_ moodImageText
 	{"\f[color,#00ffcc]\![*]\q[Scared,OnDRPMoodSet,mood_scared,scared]  \f[color,default]"}
@@ -232,24 +222,11 @@ OnDRPMoodSet
 	else
 	{moodImageText = "Feeling: %(reference1)"}
 	--
-	DiscordCustom.MoodSet
+	"\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomLargeImageKey,%(moodImageKey)]"
+	--
+	"\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomLargeImageText,%(moodImageText)]"
 	--
 	OnDRPMoodMenu
-}
-
-// ---- Setting Mood Info ----
-DiscordCustom.MoodSet
-{
-	if !InDiscordPluginCustom
-	{
-		return
-	}
-	else
-	{
-		DiscordCustomSet.LargeImageKey(moodImageKey)
-		--
-		DiscordCustomSet.LargeImageText(moodImageText)
-	}
 }
 
 // ---- Setting Minimised Status ----
@@ -328,7 +305,7 @@ OnDiscordPluginCustom
 
 OnDiscordPluginCustomEnd
 {
-	InDiscordPluginCustom = 0
+	InDiscordPluginCustom=0
 }
 
 DiscordCustomSet.base
@@ -340,6 +317,7 @@ DiscordCustomSet.base
 	}
 }
 
+// "\![raiseplugin,Discord Rich Presence,OnDiscordPluginCustomDetail,%(drpstatus)]"
 DiscordCustomSet.LargeImageKey
 {
 	DiscordCustomSet.base("OnDiscordPluginCustomLargeImageKey",_argv[0])

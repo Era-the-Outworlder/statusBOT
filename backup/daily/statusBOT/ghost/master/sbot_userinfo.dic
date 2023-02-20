@@ -33,13 +33,13 @@ OnTeachName
 		{	
 			"\c\t"
 			--
-			"What name would you like me to call you by instead? \![open,inputbox,OnNameTeach,-1]"
+			"%(sbot)\0\s[0]What name would you like me to call you by instead? \![open,inputbox,OnNameTeach,-1]"
 		}
 	else
 		{
 			"\c\t"
 			--
-			"What is your name? \![open,inputbox,OnNameTeach,-1]\x\s[0]"
+			"%(sbot)\0\s[0]What is your name? \![open,inputbox,OnNameTeach,-1]\x\s[0]"
 		}
 }
 
@@ -49,69 +49,69 @@ OnTeachName
 
 OnNameTeach
 {
-	_tempname = SANITISE(reference0) //this stores the name value from reference0 in tempname
-
-	reference0 = TOLOWER(reference0) //changes it to lowercase
-	reference0 = REPLACE(reference0," ","") //removes spaces
-	reference0 = REPLACE(reference0,".","") //removes periods
-	reference0 = REPLACE(reference0,"-","") //removes dashes
-	reference0 = REPLACE(reference0,"_","") //removes underscores
+	_tempname = TOSTR(reference0) //this stores the name value from reference0 in _tempname. it will be stripped of punction to be checked.
+	_setname = TOSTR(reference0) //is a duplicate that may be changed by events. this is the version that will be set as the username.
 	
-	_testname = TOLOWER(sakuraname)
+	// There is surely a better way to strip out punctuation, but I haven't got it in my head
+	_tempname = TOLOWER(_tempname) //changes it to lowercase
+	_tempname = REPLACE(_tempname," ","") //removes spaces
+	_tempname = REPLACE(_tempname,".","") //removes periods
+	_tempname = REPLACE(_tempname,"-","") //removes dashes
+	_tempname = REPLACE(_tempname,"_","") //removes underscores
 	
-	if reference0 == _testname
+	_selfname = TOLOWER(sakuraname)
+	
+	if reference0 == _selfname
 		{
-		"\0\s[0]Oh, that is my name too. I think it might be a little confusing for me to call you that. Is there something else I can call you?\n"
+		"%(sbot)\0\s[0]Oh, that is my name too. I think it might be a little confusing for me to call you that. Is there something else I can call you?\n"
 		--
-		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnKeepName]\n"
+		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[Keep,OnNameDone,keepghostname,%(_tempname)]\n"
 	}
-	elseif reference0 == "" //This is if the user doesn't put in a name at all, since that'd also get awkward in dialogue.
+	elseif reference0 == "" //This is if the user doesn't put in a name at all or puts one that is only spaces, periods, dashes, or uderscores since that'd also get awkward in dialogue.
 	{
-		username = "NULL" //this sets the user's name.
+		_setname = "NULL" //this sets the user's name.
 	
-		"\0\s[0]Oh, that... I think it might be a little difficult for me to call you that. I would have to call you %(CHR(34))NULL%(CHR(34)) or something like that. Is there something else I can call you?\n"
+		"%(sbot)\0\s[0]Oh, that... I think it might be a little difficult for me to call you that. I would have to call you %(CHR(34))NULL%(CHR(34)) or something like that. Is there something else I can call you?\n"
 		--
-		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnKeepName]\n"
+		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnNameDone,keepname,%(_setname)]\n"
 	}
 	elseif reference0 == "flowey" 
 	{
-		"\0\s[0]Oh! I have a brother called f_lowe_y. I think it might be a little confusing for me to call you that. Is there something else I can call you? It is fine if there is not, I do not mind.\n"
+		"%(sbot)\0\s[0]Oh! I have a brother called f_lowe_y. I think it might be a little confusing for me to call you that. Is there something else I can call you? It is fine if there is not, I do not mind.\n"
 		--
-		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnKeepName]\n"
+		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnNameDone,keepname,%(_setname)]\n"
 	}
 	elseif reference0 == "gaze" 
 	{
-		"\0\s[0]I have a sibling that goes by that name... Sometimes. I think it might be a little confusing for me to call you that. Is there something else I can call you? It is fine if there is not, I do not mind.\n"
+		"%(sbot)\0\s[0]I have a sibling that goes by that name... Sometimes. I think it might be a little confusing for me to call you that. Is there something else I can call you? It is fine if there is not, I do not mind.\n"
 		--
-		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnKeepName]\n"
+		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnNameDone,keepname,%(_setname)]\n"
 	}
-	elseif reference0 == "era" 
+	elseif reference0 == "Era" 
 	{
-		'\0\s[0]Developer, is that you?\n\n'
+		'%(sbot)\0\s[0]Developer, is that you?\n\n'
 		--
-		'\![*] \q[No,"script:\cOh. It is rather uncomfortable for me to call another by my creator%(CHR(39))s name. Please allow me to call you something else.\n\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnKeepName,notdev,%(tempname)]"]\n \n[-100]\f[align,right]\![*] \q[Yes.,"script:It is good to see you Developer! \nPlease enter your password: \![open,passwordinput,OnDeveloperPassword]"] \n'
+		'\![*] \q[No,"script:\cOh. It is rather uncomfortable for me to call another by my creator%(CHR(39))s handle. Please allow me to call you something else.\n\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnNameDone,notdev,%(_setname)]"]\n \n[-100]\f[align,right]\![*] \q[Yes.,"script:It is good to see you Developer! \nPlease enter your password: \![open,passwordinput,OnDeveloperPassword]"] \n'
 	}
 	elseif reference0 == "BetaTest" 
 	{
-		'\0\s[0]Developer, is that you?\n\n'
+		'%(sbot)\0\s[0]Developer, is that you?\n\n'
 		--
-		'\![*] \q[No,"script:\cOh. It is rather uncomfortable for me to call another by my creator%(CHR(39))s name. Please allow me to call you something else.\n\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnKeepName,notdev,%(_tempname)]"]\n \n[-100]\f[align,right]\![*] \q[Yes.,"script:It is good to see you Developer! \nPlease enter your password: \![open,passwordinput,OnDeveloperPassword]"] \n'
+		'\![*] \q[No,"script:\cOh. It is rather uncomfortable for me to call another by my creator%(CHR(39))s handle. Please allow me to call you something else.\n\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnNameDone,notdev,%(_tempname)]"]\n \n[-100]\f[align,right]\![*] \q[Yes.,"script:It is good to see you Developer! \nPlease enter your password: \![open,passwordinput,OnDeveloperPassword]"] \n'
 	}
 	elseif _tempname == username //checks against existing username
 	{
 		
-		"That is already your username. Are you trying to change something else? \_w[500]\n\n[half]"
+		"%(sbot)\0\s[0]That is already your username. Are you trying to change something else? \_w[500]\n[150]"
 		--
 		
-		"\![*] \q[Yes,OnHonorificChoice]\n \n[-100]\f[align,right]\![*] \q[No,OnNameDone]\n"
+		"\![*] \q[Yes,OnHonorificChoice,0,%(_setname)]\n \n[-100]\f[align,right]\![*] \q[No,OnNameDone,repeat,%(_setname)]\n"
 	}
 	else //if the user put in something not specified above, ie a proper name the ghost can use. 
-	{
-		username = _tempname
-		
-		"Do you want me to use a title or honorific when addressing you? \_w[500]\n\n[half]"
+	{		
+		"%(sbot)\0\s[0]Do you want me to use a title or honorific when addressing you? \_w[500]\n[150]"
 		--
-		"\![*] \q[Yes,OnHonorificChoice]\n \n[-100]\f[align,right]\![*] \q[No,OnNameDone]\n"
+		"\![*] \q[Yes,OnHonorificChoice,0,%(_setname)]\n \n[-100]\f[align,right]\![*] \q[No,OnNameDone,,%(_setname)]\n"
 	}
 }
 
@@ -120,7 +120,7 @@ OnDeveloperPassword
 	if reference0 == developerPassword
 	{
 		username = "Era"
-		"I'll set myself into debug mode-\_w[1000]"
+		"%(sbot)\0\s[0]I'll set myself into debug mode-\_w[1000]"
 		--
 		devDebug = "ON"
 		"\nWhat will your devMessage be?\![open,input,OnDevSet,,,--reference=naming]\x"
@@ -128,39 +128,12 @@ OnDeveloperPassword
 	else
 	{
 		username = "Usuper"
-		"\0\s[0]Liar. "
-		--
-		if firstBoot == 1 || firstBoot == 2 //this checks for the flag that was set during the firstBoot sequence
-		{
-			"\0\s[0]Access to Developer's toolkit denied. Moving on."
-			--
-			OnTeachPronouns
-		}
-		else
-		{
-			"\0\s[0]Access to Developer's toolkit denied.\e"
-		}
+		"%(sbot)\0\s[0]\0\s[0]Liar. \nAccess to Developer's toolkit denied.\![timerraise,500,1,OnNameDone,notdev2,%(username)]"
 	}
 
 }
 
-// If the user chooses to risk a FUN name
-OnKeepName
-{
-	if reference0 == "notdev"
-	{
-		username = reference1
-		"OK. I will call you by that name. However, access to their toolkit will not be granted."
-	}
-	else
-	{
-		"\0\s[0]I will call you that then."
-	}
-	--
-	"\cDo you want me to use a title or honorific when addressing you? \_w[500]\n\n[half]"
-	--
-	"\![*] \q[Yes,OnHonorificChoice]\n \n[-100]\f[align,right]\![*] \q[No,OnNameDone]\n"
-}
+
 	
 OnHonorificChoice
 {
@@ -172,27 +145,27 @@ OnHonorificChoice
 		\![*] \q[Mrs.,OnHonorificChoice,4]\n/
 		\![*] \q[-ssi,OnHonorificChoice,5]\n/
 		\![*] \q[-san,OnHonorificChoice,6]\n/
-		\![*] \q[No title,OnNameDone]"
+		\![*] \q[No title,OnNameDone,,%(reference1)]"
 	}
 	else
 	{
 		case reference0
 		{
 			when 1
-			{username = "Mx. " + username}
+			{_setname = "Mx. " + reference1}
 			when 2
-			{username = "Mr. " + username}
+			{_setname = "Mr. " + reference1}
 			when 3
-			{username = "Ms. " + username}
+			{_setname = "Ms. " + reference1}
 			when 4
-			{username = "Mrs. " + username}
+			{_setname = "Mrs. " + reference1}
 			when 5
-			{username = username + "-ssi"}
+			{_setname = reference1 + "-ssi"}
 			when 6
-			{username = username + "-san"}
+			{_setname = reference1 + "-san"}
 		}
 		--
-		OnNameDone
+		"\![timerraise,500,1,OnNameDone,,%(_setname)]\n"
 	}
 }
 
@@ -202,30 +175,96 @@ OnHonorificChoice
 
 OnNameDone
 {
-	if firstBoot == 1 //this checks for the flag that was set during the firstBoot sequence
+	if reference0 == "keepghostname" // if user has the same name as the ghost
 	{
-		"\0\s[0]I have learned your name, \_w[500]%(username).\0\_w[500]\_s\b[-1]\c\_s"
-		--
-		"\![timerraise,1000,1,OnTeachPronouns]"
+		username = reference1
+		if firstBoot == 1 || firstBoot == 2 //this checks for the flag that was set during the firstBoot sequence
+		{
+			"%(sbot)\0\s[0]Name Confirmed as %(username). \_w[500] \b[-1]\c"
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		else
+		{
+			"%(sbot)\0\s[0]Name Confirmed as %(username).  \_w[500] \e"
+		}
 	}
-	elseif firstBoot == 2
+	elseif reference0 == "keepname"
 	{
-		"\0\s[0]\_w[500]%(username). Ok then!\0\_w[500]\_s\b[-1]\c\_s"
+		if firstBoot == 1 || firstBoot == 2 //this checks for the flag that was set during the firstBoot sequence
+		{
+			"%(sbot)\0\s[0]OK. I'll call you %(CHR(34))%(username)%(CHR(34)).  \_w[500] \b[-1]\c"
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		else
+		{
+			"%(sbot)\0\s[0]OK. %(CHR(34))%(username)%(CHR(34)) is it, user. \_w[500] \e"
+		}
+	}
+	elseif reference0 == "notdev"
+	{
+		
+		"%(sbot)\0\s[0]OK. I will call you by that name. However, access to their toolkit will not be granted.\_w[500]" 
 		--
-		"\![timerraise,1000,1,OnTeachPronouns]"
+		"\c%(sbot)\0\s[0]Do you want me to use a title or honorific when addressing you? \_w[500]\n[150]"
+		--
+		"\![*] \q[Yes,OnHonorificChoice,0,%(_setname)]\n \n[-100]\f[align,right]\![*] \q[No,OnNameDone,,%(_setname)]\n"
+	}
+	elseif reference0 == "notdev2"
+	{
+		if firstBoot == 1 || firstBoot == 2 //this checks for the flag that was set during the firstBoot sequence
+		{
+			"Moving on."
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		else
+		{
+			"%(sbot)\0\s[0]Name set. %(username)."
+		}
+	}
+	elseif reference0 == "repeat" //called only if there was an existing value for username somehow, and the user entered the same name again.
+	{
+		if firstBoot == 1 || firstBoot == 2 
+		{
+			"%(sbot)\0\s[0]I will call you that then. \_w[500] \b[-1]\c"
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		else
+		{
+			"%(sbot)\0\s[0]No change to username made.\_w[500] \e"
+		}
 	}
 	else
 	{
-		"\0\s[0]Alright, %(username)!\e"
-	}	
+		if firstBoot == 1 
+		{
+			"%(sbot)\0\s[0]I have learned your name, \_w[500]%(username).\0\_w[500]\_s\b[-1]\c\_s"
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		elseif firstBoot == 2
+		{
+			"%(sbot)\0\s[0]\_w[500]%(username). Ok then!\0\_w[500]\_s\b[-1]\c\_s"
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		else
+		{
+			"%(sbot)\0\s[0]Alright, %(username)!\e"
+		}
+	}
 }
+
 
 // -------- OnTeachPronouns --------
 // This is called from either OnFirstBoot or the User Config menu to set/change the user's pronouns
 
 OnTeachPronouns
 {
-	"\t\c\0\b2Please select your pronouns:\_w[500]\n\n\n[half]\_q/
+	"\t\c\0\b2Please select your pronouns:\_w[500]\n\n[150]\_q/
 	\n\n\n/
 	\![*] \q[He-His-Him,OnSetPronouns,1]\n/
 	\![*] \q[She-Her-Her,OnSetPronouns,2]\n/	
@@ -336,7 +375,7 @@ OnPossessiveTeach
 	}
 	else //Continuing on
 	{
-		"\t\0\s[0]You entered %(_nounN), %(_nounO), and %(_nounP).\nDoes that seem right? \_w[500]\n\n[half]/
+		"\t\0\s[0]You entered %(_nounN), %(_nounO), and %(_nounP).\nDoes that seem right? \_w[500]\n[150]/
 		\_q\![*]\q[Looks good!,OnSetPronouns,0,%_nounN,%_nounO,%_nounP]\n/
 		\![*]\q[Let's try that again...,OnTeachCustomPronoun]"
 			

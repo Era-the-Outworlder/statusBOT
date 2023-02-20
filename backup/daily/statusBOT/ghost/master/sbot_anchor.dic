@@ -10,21 +10,6 @@
 //                                                                 
 
 
-// OnTranslate
-// {
-	// _talk = reference0
-	// _talk = REPLACE(_talk, "bugreport(at)outworlderaffairs.com", "\_a[bugmail]bugreport@outworlderaffairs.com\_a")		
-	// if silentMode == "ON"
-	// {
-		// _talk = REPLACE(_talk, "\![sound,play,", "\![sound,stop,")
-		// --
-		// "%(_talk)"
-	// }
-	// else	
-	// {
-		// "%(_talk)"
-	// }	
-// }
 OnTranslate
 {
     _talk = reference0
@@ -55,6 +40,10 @@ OnAnchorSelectEx
 	if "http://" _in_ reference0 || "https://" _in_ reference0 //checking to see if the link is a web address
 	{
 		"\j[%(reference0)]\e"
+	}
+	elseif "http://" _in_ reference1 || "https://" _in_ reference1
+	{
+		"\j[%(reference1)]\e"
 	}
 	else //if it's NOT a web address
 	{

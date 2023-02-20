@@ -7,4 +7,4 @@ update_result,OK(0)
 firstboot,699268526
 update_time,704866998
 commitmemorysize,242250
-lastboot,727126243
+lastboot,730206379

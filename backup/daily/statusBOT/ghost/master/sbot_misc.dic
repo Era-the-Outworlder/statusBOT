@@ -16,6 +16,7 @@ On_username
 	username
 }
 
+
 // ---- OnKeyPress ----
 // This defines the hotkeys your ghost will use.
  
@@ -24,6 +25,10 @@ OnKeyPress
 	if reference0 == "t"
 	{
 		OnAiTalk
+	}
+	elseif reference0 == "l"
+	{
+		OnLastAITalk
 	}
 	elseif reference0 == "r"
 	{
@@ -42,6 +47,15 @@ OnKeyPress
 	}
 }
 
+OnLastTalk 
+{
+	SHIORI3FW.LastTalk
+}
+
+OnLastAITalk
+{
+	SHIORI3FW.LastAITalk
+}
 
 // -------- Things specifically added by Era --------
 
@@ -134,12 +148,6 @@ On_hwnd
 // -------- System Information with CPUID --------
 
 // ---- Getting Baseware information ----
-On_basewareversion
-{
-	bwVersion = reference0
-	bodyVersion = reference1
-	bwVersionEX = reference2
-}
 
 OnRunCPUID
 {
@@ -157,9 +165,9 @@ OnRunCPUID
 	
 	"\0\b[2]\_q\![set,autoscroll,disable]"
 	--
-	// "\f[color,#FFFF00]OS:\f[default] %(_os_name) v.%(_os_version_int) \n\f[color,#FFFF00]Build #:\f[default]%(_os_build) \n\n[half]"
+	// "\f[color,#FFFF00]OS:\f[default] %(_os_name) v.%(_os_version_int) \n\f[color,#FFFF00]Build #:\f[default]%(_os_build) \n[150]"
 	--
-	"\f[color,#FFFF00]CPU:\f[default] %(_cpu_name) \n\f[color,#FFFF00]Clock Rate:\f[default] %(_cpu_clockex)MHz\n\n[half]"
+	"\f[color,#FFFF00]CPU:\f[default] %(_cpu_name) \n\f[color,#FFFF00]Clock Rate:\f[default] %(_cpu_clockex)MHz\n[150]"
 	--
 	_memTP = TOREAL(memorytotalphys)
 	_memTPKB = _memTP/1024
@@ -175,7 +183,7 @@ OnRunCPUID
 	_memAPGB = TOSTR(_memAPGB)
 	_availablePhysMemGB = SUBSTR(_memAPGB,0,4)
 
-	"\f[color,#FFFF00]Memory Load:\f[default] %(memoryload)% \n\f[color,#FFFF00]Total PhysMemory:\f[default] \n%(memorytotalphys) Bytes \n%(_totalPhysMemGB) GiB \n\f[color,#FFFF00]Available PhysMemory:\f[default] \n%(memoryavailphys) Bytes \n%(_availablePhysMemGB) GiB\n\n[half]"
+	"\f[color,#FFFF00]Memory Load:\f[default] %(memoryload)% \n\f[color,#FFFF00]Total PhysMemory:\f[default] \n%(memorytotalphys) Bytes \n%(_totalPhysMemGB) GiB \n\f[color,#FFFF00]Available PhysMemory:\f[default] \n%(memoryavailphys) Bytes \n%(_availablePhysMemGB) GiB\n[150]"
 	--
 	"\f[color,#FFFF00]Ukagaka:\f[default] \n%(basewarename): %(bwVersionEX)"
 	--
@@ -207,13 +215,13 @@ OnRecycleStart
 	elseif _binNum == 1 //If the recycle bin has 1 item
 	{
 		"%(sbot)There is %(_binNum) item, using %(_binDisplay)%(_type) of space. \_w[1000]\n/
-		 \f[align,center]Proceed?\n	\![*] \f[align,left]\q[Yes,RecycleEmpty]\n \n[-100]\f[align,center]--------\n \n[-100]\f[align,right] \![*] \q[No,RecycleCancel]\n\n[half]\f[align,left]"
+		 \f[align,center]Proceed?\n	\![*] \f[align,left]\q[Yes,RecycleEmpty]\n \n[-100]\f[align,center]--------\n \n[-100]\f[align,right] \![*] \q[No,RecycleCancel]\n[150]\f[align,left]"
 	}
 	elseif _binNum >= 2 //If the recycle bin has anything in it.
 	{
 		"\0%(sbot)There are %(_binNum) items, using %(_binDisplay)%(_type) of space. \_w[1000]\n/
 		 Proceed?\n/
-		\![*] \q[Yes,RecycleEmpty] \n \n[-100]\f[align,center]----\n \n[-100]\f[align,right] \![*] \q[No,RecycleCancel]\n\n[half]\f[align,left]"
+		\![*] \q[Yes,RecycleEmpty] \n \n[-100]\f[align,center]----\n \n[-100]\f[align,right] \![*] \q[No,RecycleCancel]\n[150]\f[align,left]"
 	}
 }
 	
@@ -261,10 +269,10 @@ OnFileDrop2
 		{
 			Wallpaperfile = reference0
 			
-			" FILE %(_filename)%(_fileext). Wallpaper?\n\n[half]/
+			" FILE %(_filename)%(_fileext). Wallpaper?\n[150]/
 			\q[Centered,SetWallpaper_0]\n/
 			\q[Tiled,SetWallpaper_1]\n/
-			\q[Stretched,SetWallpaper_2]\n\n[half]/
+			\q[Stretched,SetWallpaper_2]\n[150]/
 			\q[No thanks,SetWallpaper_Cancel]\e"
 		}
 		when ".mid", ".wav", ".mp3", ".wma", ".au", ".ogg" //Audio file formats
@@ -348,7 +356,7 @@ OnInstallComplete
 
 OnInstallFailure
 {
-	"%(sbot)Failed. Unable to install. \n\n[half]"
+	"%(sbot)Failed. Unable to install. \n[150]"
 	
 	--
 	if reference0 == "unsupported" //This checks if the reason it failed is because it was unsupported.
@@ -779,7 +787,7 @@ OnHeadlinesenseComplete
  
 OnHeadlinesenseFailure
 {
-	"\0\s[0]%(errorMsg)\_w[500]\n\n[half]"	
+	"\0\s[0]%(errorMsg)\_w[500]\n[150]"	
 		
 	--
 	if reference0 == "can't download" //if they can't download the rss feed for some reason
@@ -844,7 +852,7 @@ OnNarCreated
 
 // Machine translation: "I referenced the dictionary of Mika (http://homepage2.nifty.com/ko-ki/). Thank you. Namu Castle. "
 
-// This set of functions was done by the above Korean coder, I think. I'll leave their comment there untouched. 
+// This set of functions was done based on code from the above Korean coder, I think. I'll leave their comment there untouched. 
  
 
 // ----OnSNTPBegin -----------

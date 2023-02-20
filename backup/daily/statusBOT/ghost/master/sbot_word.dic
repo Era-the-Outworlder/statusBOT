@@ -13,28 +13,28 @@
 // ---- Voices ----
 
 sbot
-{"\![sound,play,sfx\beepe.mp3,--volume=%(volume),--window=false]"}
+{"\![sound,play,sfx\beepe.mp3,--volume=%(volume)]"}
 
 beeboop
-{"\![sound,play,sfx\beeboop.mp3,--volume=%(volume),--window=false]"}
+{"\![sound,play,sfx\beeboop.mp3,--volume=%(volume)]"}
 
 boobeep
-{"\![sound,play,sfx\boobeep.mp3,--volume=%(volume),--window=false]"}
+{"\![sound,play,sfx\boobeep.mp3,--volume=%(volume)]"}
 
 hum
-{"\![sound,play,sfx\hum.mp3,--volume=%(volume),--window=false]"}
+{"\![sound,play,sfx\hum.mp3,--volume=%(volume)]"}
 
 buzz
-{"\![sound,play,sfx\buzz.mp3,--volume=%(volume),--window=false]"}
+{"\![sound,play,sfx\buzz.mp3,--volume=%(volume)]"}
 
 pwrON
-{"\![sound,play,sfx\pwr_on.mp3,--volume=%(volume),--window=false]"}
+{"\![sound,play,sfx\pwr_on.mp3,--volume=%(volume)]"}
 
 pwrOFF
-{"\![sound,play,sfx\pwr_off.mp3,--volume=%(volume),--window=false]"}
+{"\![sound,play,sfx\pwr_off.mp3,--volume=%(volume)]"}
 
 bweep
-{"\![sound,play,sfx\bweep.mp3,--volume=%(volume),--window=false]"}
+{"\![sound,play,sfx\bweep.mp3,--volume=%(volume)]"}
 
 
 // ----System display related----

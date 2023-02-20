@@ -14,65 +14,39 @@
 // -------- AI Talk --------
 //This is where all their random conversations are stored.
 
-// ---- AiTalk ----
+// ---- OnAiTalk ----
 
-AiTalk
+OnAiTalk
 {
-	if RAND(100) < (communicateratio - 1)
- 	{
- 		OnStartCommunicate
-	}
- 	else
+	if CHAIN.IDName
 	{
- 		if mikireflag == 0
+		ChainTalk
+	}
+	elseif TOSTR(offscreenflag) != ""
+	{
+		OnOffscreenTalk
+	}
+	else
+	{
+		if RAND(100) < (communicateratio - 1)
 		{
-			if CHAIN.IDName == "" 
-			{
- 				lastTalk = RandomTalk
-			}
-			else 
-			{
-				lastTalk = ChainTalk
-			}
-			lastTalk
+			OnStartCommunicate
 		}
- 		else
-		{ 
-			MikireTalk
- 		}
+		else
+		{
+			RandomTalk
+		}
 	}
 }
 
 
 //--RandomTalk 
-
-//--Rules (By Quonit)
-
-// You can change the size of text using \f[height,(number, or the word default).
- // \f[strike,true] makes the words struck out.
- // \f[strike,defualt] resets the text to defualt.
- // \f[sub,true] makes text subscript.
- // \f[sub,default] resets text to normal.
- // \f[sup,true] makes text superscript.
- // \f[sup,false] makes the text normal again.
- // \f[underline,true] underlines text.
- // \f[underline,default] removes the line from under the text.
- // \f[bold,true] makes your statement bold.
- // \f[bold,false] makes the text not so bold.
- // \f[italic,true] makes text slanted.
- // \f[italic,false] de-slants the text.
- // \f[color0-255,0-255,0-255] changes the color of the text.
- // \f[color,default] will return the color to default.
- // \f[default] returns everything back to normal.
- // \_a[[http://www.website.com/](put text here)\_a can link a website in dialogue.
- // \0\s[*]\1\s[*]\_s(put dialogue here) has characters say dialogue at the same time.
-
  
 // %(hourlyArray)
 // %(sbot)
 
 
-RandomTalk : nonoverlap
+RandomTalk : nonoverlap_pool
 {	
 	"%(beeboop)\_q\n\n\n\n\f[align,center] Beep-boop \f[default]"
 
@@ -275,31 +249,8 @@ OnSecondChange
  	{
 	 	passsec ++
 	}
-	--
-	if mikireflag == 0 && reference1 == 1 
-	{
-		mikireflag = reference1 //reference1 is if the ghost is offscreen or not
-		MikireTalk
-	}
-	
-	if mikireflag == 1 && reference1 == 0 //Dialogue for coming back on the screen
-	{
-		mikireflag = reference1
-		EndMikireTalk
-	}
-	
-	if reference2 == 1 //Is ghost overlapping
-	{
- 		""
-	}
 }
 
-// ---- OnMinuteChange ----
-// Time related dialogue using the OnMinuteChange function
-// OnMinuteChange //This triggers when the minute changes on your system clock
-// {
-
-// }
 
 OnHourTimeSignal
 {
@@ -319,35 +270,40 @@ OnHourTimeSignal
 		}
 	}
 }
-// Time signal event. Occurs every hour on the hour (near? 00:00).
 
-// If talk cannot be played, wait until you can talk. Therefore , you may be notified at a slightly different time.
 
-// Reference0
-// OS continuous boot time (hour)
-// Reference1
-// 1 when it is out of stock, 0 otherwise.
-// Reference2
-// 1 when overlapping, 0 otherwise.
-// Reference3
-// Always 1. (To wait until the talk can be played)
-// Reference4
-// * SSP only (at OS level) Time left without any operation. In seconds.
+// ----- OnOffscreen -----
 
-//---- MikireTalk ----
-//MikireTalk is dialogue for when your main character is off-screen.
- 
-MikireTalk
+OnOffscreen
 {
-	"%(sbot)\0\s[0]I have been moved offscreen. Press Ctrl-Shift-F12 to return me to my default position.\_w[500]"
+	if  "0" !_in_ TOSTR(reference0)
+	{
+		offscreenflag[0] = ""
+	}
+	elseif "0" _in_ TOSTR(reference0) && offscreenflag[0] != "0"
+	{
+		offscreenflag[0] = "0"
+	}
+	else
+	{
+		"%(errorMsg)"
+	}
+	--
+	OnOffscreenTalk
 }
 
-// ---- EndMikireTalk -----
-//For after you bring the character back on screen.
- 
-EndMikireTalk
+// ----- OnOffscreenTalk -----
+
+OnOffscreenTalk : nonoverlap_pool
 {
-	"%(sbot)\0\s[0]Thank you! I definitely prefer being onscreen."
+	if offscreenflag[0] == "0"
+	{
+		"%(sbot)\0\s[0]I have been moved offscreen. Press Ctrl-Shift-F12 to return me to my default position.\_w[500]"
+	}
+	else
+	{
+		"%(sbot)\0\s[0]Thank you! I definitely prefer being onscreen."
+	}
 }
 
 

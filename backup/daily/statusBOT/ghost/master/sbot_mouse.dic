@@ -61,7 +61,7 @@ MouseMoveSakura
 			when 1-10
 			{
 				"..."
-				"%(sbot)I have been pet?[500]"
+				"%(sbot)I have been pet?\_w[500]"
 			}
 			when 11-50
 			{
@@ -140,7 +140,7 @@ MouseDoubleClickSakura
  	}
 	else
  	{
- 		OnMenuRun
+ 		"\![raise,OnMenuRun,main]"
 	}
  }
 
