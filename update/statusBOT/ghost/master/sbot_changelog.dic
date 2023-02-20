@@ -20,7 +20,8 @@ OnChangeLog
 	"--Version 1.1.0--\n[110]/
 	-Menu rebuild\n[110]/
 	-Added volume controls for sound\n[110]/
-	-YAYA version update\n[150]"
+	-YAYA version update and related aitalk changes\n[110]/
+	-replace mikiretalk with OnOfscreen\n[150]"
 	--
 	"--Version 1.0.1--\n[110]/
 	-Minor bugfix\n[110]/
