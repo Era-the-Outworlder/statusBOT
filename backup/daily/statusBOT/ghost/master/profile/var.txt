@@ -1,0 +1,10 @@
+Charset,UTF-8
+install,699268526
+homeurl_found,1
+surfacecount,1
+homeurl,https://raw.githubusercontent.com/Era-The-Outworlder/era_makes_ghosts/main/updates/statusBOT/
+update_result,OK(0)
+firstboot,699268526
+update_time,704866998
+commitmemorysize,242250
+lastboot,727126243

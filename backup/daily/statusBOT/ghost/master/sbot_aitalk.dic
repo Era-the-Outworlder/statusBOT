@@ -1,0 +1,362 @@
+﻿
+//   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄     ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄            ▄    ▄ 
+//  ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌   ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          ▐░▌  ▐░▌
+//  ▐░█▀▀▀▀▀▀▀█░▌ ▀▀▀▀█░█▀▀▀▀     ▀▀▀▀█░█▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░▌          ▐░▌ ▐░▌ 
+//  ▐░▌       ▐░▌     ▐░▌             ▐░▌     ▐░▌       ▐░▌▐░▌          ▐░▌▐░▌  
+//  ▐░█▄▄▄▄▄▄▄█░▌     ▐░▌ ▄▄▄▄▄▄▄▄▄▄▄ ▐░▌     ▐░█▄▄▄▄▄▄▄█░▌▐░▌          ▐░▌░▌   
+//  ▐░░░░░░░░░░░▌     ▐░▌▐░░░░░░░░░░░▌▐░▌     ▐░░░░░░░░░░░▌▐░▌          ▐░░▌    
+//  ▐░█▀▀▀▀▀▀▀█░▌     ▐░▌ ▀▀▀▀▀▀▀▀▀▀▀ ▐░▌     ▐░█▀▀▀▀▀▀▀█░▌▐░▌          ▐░▌░▌   
+//  ▐░▌       ▐░▌     ▐░▌             ▐░▌     ▐░▌       ▐░▌▐░▌          ▐░▌▐░▌  
+//  ▐░▌       ▐░▌ ▄▄▄▄█░█▄▄▄▄         ▐░▌     ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌ ▐░▌ 
+//  ▐░▌       ▐░▌▐░░░░░░░░░░░▌        ▐░▌     ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌
+//   ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀          ▀       ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀    ▀ 
+//                                                                              
+// -------- AI Talk --------
+//This is where all their random conversations are stored.
+
+// ---- AiTalk ----
+
+AiTalk
+{
+	if RAND(100) < (communicateratio - 1)
+ 	{
+ 		OnStartCommunicate
+	}
+ 	else
+	{
+ 		if mikireflag == 0
+		{
+			if CHAIN.IDName == "" 
+			{
+ 				lastTalk = RandomTalk
+			}
+			else 
+			{
+				lastTalk = ChainTalk
+			}
+			lastTalk
+		}
+ 		else
+		{ 
+			MikireTalk
+ 		}
+	}
+}
+
+
+//--RandomTalk 
+
+//--Rules (By Quonit)
+
+// You can change the size of text using \f[height,(number, or the word default).
+ // \f[strike,true] makes the words struck out.
+ // \f[strike,defualt] resets the text to defualt.
+ // \f[sub,true] makes text subscript.
+ // \f[sub,default] resets text to normal.
+ // \f[sup,true] makes text superscript.
+ // \f[sup,false] makes the text normal again.
+ // \f[underline,true] underlines text.
+ // \f[underline,default] removes the line from under the text.
+ // \f[bold,true] makes your statement bold.
+ // \f[bold,false] makes the text not so bold.
+ // \f[italic,true] makes text slanted.
+ // \f[italic,false] de-slants the text.
+ // \f[color0-255,0-255,0-255] changes the color of the text.
+ // \f[color,default] will return the color to default.
+ // \f[default] returns everything back to normal.
+ // \_a[[http://www.website.com/](put text here)\_a can link a website in dialogue.
+ // \0\s[*]\1\s[*]\_s(put dialogue here) has characters say dialogue at the same time.
+
+ 
+// %(hourlyArray)
+// %(sbot)
+
+
+RandomTalk : nonoverlap
+{	
+	"%(beeboop)\_q\n\n\n\n\f[align,center] Beep-boop \f[default]"
+
+	"%(boobeep)\_q\n\n\n\n\f[align,center] Boop-beep \f[default]"
+
+	"%(hum)\_q\n\n\n\n\f[align,center] Hmm-hmmm... \f[default]"
+
+	"%(sbot)\_q\n\n\n\f[align,center] 01100010 \n 01100101 \n 01100101 \n 01110000 \f[default]"
+
+	"%(sbot)\_q\n\n\n\f[align,center] 01100010 \n 01101111 \n 01101111 \n 01110000 \f[default]"
+	
+	"%(buzz)\_q\n\n\n\n\f[align,center] -bzzt- \f[default]"
+	
+	"%(sbot)\_q\n\n\n\n\f[align,center] -%(disTime)- \f[default]"
+	 
+	 
+	// -------- Conditionals --------
+
+		
+	if ASEARCH("saidtimeslot",hourlyArray) == -1
+	{OnTimeTalk}
+	
+	if ASEARCH("saidweekday",hourlyArray) == -1
+	{OnDayTalk}
+	
+	if ASEARCH("saidmonthly",hourlyArray) == -1
+	{OnMonthTalk}
+	
+	
+}	
+
+
+// ---- Time Functions ----
+// Keeps track of if an hour has passed. Just ignore this.
+
+// FlagArray ,= "newflag" and ASEARCH("newflag",FlagArray) != -1
+
+
+OnTimeTalk
+{
+	"%(sbot)It's %(dishour):%(dismin)"
+	--
+	case hour
+	{
+		when 0-4 // weehours
+		{
+			" in the morning."
+		}
+		when 5-8 // earlymorning
+		{
+			" in the morning."
+		}
+		when 9-11 // morning
+		{
+			" in the morning."
+		}
+		when 12-14 // lunch
+		{
+			" in the afternoon."
+		}
+		when 15-17 // afternoon
+		{
+			" in the afternoon."
+		}
+		when 18-20 // evening
+		{
+			" in the evening."
+		}
+		when 21-23 // latenight
+		{
+			" at night."
+		}
+	}
+	--
+	"\nI have been running for \n%(passhour) hours and %(passmin) minutes."
+	--
+	"\e:eval=hourlyArray ,= 'saidtimeslot'"
+}
+
+OnDayTalk
+{
+	"\n\n%(sbot)Today is "
+	--
+	if weekday == 0
+	{
+		"Sunday."
+	}
+	if weekday == 1
+	{
+		"Monday."
+	}
+	if weekday == 2
+	{
+		"Tuesday."
+	}
+	if weekday == 3
+	{
+		"Wednesday."
+	}
+	if weekday == 4
+	{
+		"Thursday."
+	}
+	if weekday == 5
+	{
+		"Friday."
+	}
+	if weekday == 6
+	{
+		"Saturday."
+	}
+	--
+	"\e:eval=hourlyArray ,= 'saidweekday'"
+}
+
+OnMonthTalk
+{
+	"\n\n%(sbot)The current month is "
+	--
+	if month == 1
+	{
+		"January."
+	}
+	if month == 2
+	{
+		"February."
+	}
+	if month == 3
+	{
+		"March."
+	}
+	if month == 4
+	{
+		"April."
+	}
+	if month == 5
+	{
+		"May."
+	}
+	if month == 6
+	{
+		"June."
+	}
+	if month == 7
+	{
+		"July."
+	}
+	if month == 8
+	{
+		"August."
+	}
+	if month == 9
+	{
+		"September."
+	}
+	if month == 10
+	{
+		"October."
+	}
+	if month == 11
+	{
+		"November."
+	}
+	if month == 12
+	{
+		"December."
+	}
+	--
+	"\e:eval=hourlyArray ,= 'saidmonthly'"
+}
+
+
+
+
+
+// ---- OnSecondChange ----
+// Triggered by System Time 1-second tic
+
+OnSecondChange
+{
+	if passsec == 59
+ 	{
+	 	passsec = 0
+		--
+		if passmin == 59
+		{
+			passmin = 0
+			passhour ++
+			--
+			ERASEVAR("hourlyArray")
+			--
+			hourlyArray = IARRAY
+		}
+		else
+		{
+			passmin ++
+		}
+	}
+ 	else
+ 	{
+	 	passsec ++
+	}
+	--
+	if mikireflag == 0 && reference1 == 1 
+	{
+		mikireflag = reference1 //reference1 is if the ghost is offscreen or not
+		MikireTalk
+	}
+	
+	if mikireflag == 1 && reference1 == 0 //Dialogue for coming back on the screen
+	{
+		mikireflag = reference1
+		EndMikireTalk
+	}
+	
+	if reference2 == 1 //Is ghost overlapping
+	{
+ 		""
+	}
+}
+
+// ---- OnMinuteChange ----
+// Time related dialogue using the OnMinuteChange function
+// OnMinuteChange //This triggers when the minute changes on your system clock
+// {
+
+// }
+
+OnHourTimeSignal
+{
+ 	if minute == 0 
+	{
+ 		if hour == 12 
+		{
+ 			"%(sbot)\_q\n\n\n\n\n\f[align,center] It is noon. \f[default]"
+		}
+ 		elseif hour == 0
+		{
+ 			"%(sbot)\_q\n\n\n\n\n\f[align,center] It is midnight. \f[default]"
+		}
+		else
+		{
+			"%(sbot)\_q\n\n\n\n\n\f[align,center] It is %(dishour) o'clock. \f[default]"
+		}
+	}
+}
+// Time signal event. Occurs every hour on the hour (near? 00:00).
+
+// If talk cannot be played, wait until you can talk. Therefore , you may be notified at a slightly different time.
+
+// Reference0
+// OS continuous boot time (hour)
+// Reference1
+// 1 when it is out of stock, 0 otherwise.
+// Reference2
+// 1 when overlapping, 0 otherwise.
+// Reference3
+// Always 1. (To wait until the talk can be played)
+// Reference4
+// * SSP only (at OS level) Time left without any operation. In seconds.
+
+//---- MikireTalk ----
+//MikireTalk is dialogue for when your main character is off-screen.
+ 
+MikireTalk
+{
+	"%(sbot)\0\s[0]I have been moved offscreen. Press Ctrl-Shift-F12 to return me to my default position.\_w[500]"
+}
+
+// ---- EndMikireTalk -----
+//For after you bring the character back on screen.
+ 
+EndMikireTalk
+{
+	"%(sbot)\0\s[0]Thank you! I definitely prefer being onscreen."
+}
+
+
+// -------- OnSurfaceRestore --------
+// Default pose
+
+OnSurfaceRestore
+{	
+	"\0\s[0]\e"	
+}
+
+ 

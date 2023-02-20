@@ -1,0 +1,34 @@
+
+//   CCCCC  hh                                        LL                     
+//  CC    C hh        aa aa nn nnn   gggggg   eee     LL       oooo   gggggg 
+//  CC      hhhhhh   aa aaa nnn  nn gg   gg ee   e    LL      oo  oo gg   gg 
+//  CC    C hh   hh aa  aaa nn   nn ggggggg eeeee     LL      oo  oo ggggggg 
+//   CCCCC  hh   hh  aaa aa nn   nn      gg  eeeee    LLLLLLL  oooo       gg 
+//                                   ggggg                            ggggg  
+
+// I want a built-in changelog someday.
+
+OnGhostVer
+{
+	"1.0.1"
+}
+
+OnChangeLog
+{
+	"\![set,autoscroll,disable]\_q\b2\_l[90]\n/
+
+	--Version 1.0.1--\n\n/
+	-Added volume controls for sound\n\n/
+	
+	--Version 1.0.0--\n\n/
+	-Initial release\n\n"
+	
+	--
+	if reference0 == "menu" //Checks to see if the user came here from the functions menu
+	{
+		"\![*]\q[Done,]\n\![*]\q[Back to Functions,OnFunctionMenu]\e"
+	}
+	elseif reference0 == "update"
+	{"\n\![*]\q[Close,]\e"}
+	
+}

@@ -1,0 +1,552 @@
+﻿//     (                )              (     
+//   ( )\            ( /( (            )\ )  
+//   )((_)  (    (   )\()))\    (     (()/(  
+//  ((_)_   )\   )\ (_))/((_)   )\ )   ((_)) 
+//   | _ ) ((_) ((_)| |_ | __| _(_/(   _| |  
+//   | _ \/ _ \/ _ \|  _|| _| | ' \))/ _` |  
+//   |___/\___/\___/ \__||___||_||_| \__,_|  
+//                                           
+
+//---------Booting and Ending--------
+//This .dic file contains booting and ending dialogue, as well as several other functions.
+
+//----OnfirstBoot----
+//~~~~Runs after new installation of ghost, only if ghost was installed from .nar file. Also declares and initialises certain variables
+
+
+OnFirstBoot
+{
+	
+	OnNotifyUserInfo
+	--
+	On_basewareversion
+	--
+ 	lastTalk = "" //This is part of how chained conversations work (see aitalk.dic).
+	passmin = 0 
+	passsec = 0 // These two keep track of the time.
+	passhour = 0
+ 	mikireflag = 0	// mikireflag tracks if character is cut off by screen border
+	communicateratio = 0 // how often ghost will initiate commu with other ghosts
+ 	aitalkinterval = 300 //Their default talk rate in seconds.
+ 	talksetting = "5 minutes" //How the value aitalkinterval will display in the config menu.
+	nowshell = "master" //init as default shell
+	deleteshitai = "OFF" //Sets whether or not the user can uninstall the ghost to "OFF".
+	username = "" //This sets a temporary name for the user.
+	birthdayprint = "" //A temporary value for the user's birthday.
+	devDebug = "OFF"
+	//wisott
+	installinfo = ("%(year)","%(month)","%(day)","%(hour)","%(minute)","%(second)","%(OnGhostVer)")
+	// Custom options
+	silentMode = "OFF" //does not start in silent mode
+	volume = 100
+	verBalete = "ON" //DOES start with recycle bin confirmation on
+	// A couple of flag arrays
+	hourlyArray = IARRAY
+	//The following are global variables for ghost interactions.
+	gazeTalk = 0
+	//The following are global variables for user interactions.
+	stroke = 0	// Sets being-pet state to zero.
+	petCount = 0
+	//richpresence related variables
+	smallImageCaption = ""
+	drpstatus = ""
+	devstate = "NONE"
+	moodImageKey = "base_img"
+	moodImageText = "era-the-outworlder.github.io/era_makes_ghosts"
+
+	--
+	"\t\0\s[0]%(pwrON)\![set,otherghosttalk,true]\![set,sticky-window,1,0]"
+	--
+	"This UKAGAKA uses audio to enhance certain events, as well as to indicate by sound that the ghost is talking. As not all users may desire this feature, a Silent Mode has been included, which prevents the ghost from playing any audio files.\x\c\n\n\_q\f[align,center]This setting can always be changed from the ghost's menu.\n\n\f[align,center]\![*] \q[Silent Mode On,OnFBStart,%(reference0),ON]\n/
+	\![*] \q[Silent Mode Off,OnFBStart,%(reference0),OFF]"
+}
+
+OnFBStart
+{
+	silentMode = reference1
+	if reference0 == 0 //Don't touch this line.
+ 	{
+		firstBoot = 1
+		"\t"
+		--
+		"\0\s[0]\_w[1000]%(sbot)Hello, I am statusBOT.\n"
+		--
+		"Before we get started, I need to know a few things about my User.\_w[500]\_s\b[-1]\c\_s"
+		--		
+		"\![timerraise,1000,1,OnTeachName]"
+ 	}
+	else
+ 	{
+		firstBoot = 2
+		
+		"\0\s[0]%(sbot)Hello, I am statusBOT. Either I was installed previously on this system, or there has been a minor error. To continue, Let's make sure my data on you is correct, %(menuRName). \_w[1000]\_s\b[-1]\c\_s"
+		--
+		"\![timerraise,1000,1,OnTeachName]"
+ 	}
+
+}
+
+
+OnFBContinue
+{
+	firstBoot = 0
+	"\t\c\1I'll give a brief walkthrough of my primary functions before we set your status message for the first time.\_w[2000]"
+	--
+	"\c\1If you double-click my body, the main menu will open like this- \_w[1000]\![embed,OnMenuRun,firstboot] \1\_w[3000]\n\nOr if you double-click my head, it will directly open my Discord Rich Presence Menu like this.\_w[1000]\0\c\![embed,OnDRPMenu,firstboot]\1\_w[2000]\c\n\nFrom there you can set your status message, turn on the Development Status icon and message, or set a mood for me to display on Discord.\_w[1000]"
+	--
+	'\1\cClick "Change Status" to set your status for the first time, and you will be good to go!'
+	--
+	"\e"
+}
+// \![embed,OnFBContinue]
+
+
+
+//-----------------------Normal Booting----------------------------
+
+
+//--OnBoot
+
+OnBoot
+ {
+	OnNotifyUserInfo
+	lastTalk = "" 
+	hourlyArray = IARRAY
+	cumuhour = (cumuhour + passhour)
+	passhour = 0
+	passmin = 0
+	passsec = 0
+	
+	//turns on detection of other ghosts' speech
+	//Neutral pose.
+ 	"%(pwrON)\![set,otherghosttalk,true]\![set,sticky-window,1,0]\0\s[0]"
+	--
+	
+	if bornmonth == month && bornday == day
+	{
+				"%(sbot)It is %(bornmonthprint) %(borndayprint).\_w[500]\nHappy birthday, %(username)." 
+				--
+				"\![timerraise,20000,1,OnDiscordPluginCustom]\e"
+				
+	}
+	else
+	{
+		"%(normalboottalk)\_w[3000]\c" //If none of the days above match the current date, the ghost instead will go down to the next function, normalboottalk.
+	}
+	
+	
+	
+}
+
+
+//--normalboottalk
+
+//normalboottalk will vary their dialogue in a few different ways depending on the time and weekday.
+
+normalboottalk
+{
+	_bootday = "%(month)%(day)"
+	
+	--
+	case hour
+	{
+		when 0-4 // weehours
+		{
+			if _bootday == lastbootday
+			{
+				if isMorning 
+				{"Good morning again, %USER. I hope your day goes well."}
+				else
+				{"Hello again %USER."}
+			}
+			else
+			{
+				"Good-morning %USER! Or is it good evening?\n"
+				--
+				"\![*] \q[It's morning.,OnIsMorNight,morning]\n"
+				--
+				"\![*] \q[It is late.,OnIsMorNight,night]\n\x"
+				--
+				lastbootday = _bootday
+			}
+		}
+		when 5-8 // earlymorning
+		{
+			if _bootday == lastbootday
+			{"Good morning again, %USER."}
+			else
+			{
+				"Good morning %USER. Getting an early start? I hope the day ahead is exactly as productive as you want it to be."
+				lastbootday = _bootday
+			}
+		}
+		when 9-11 // morning
+		{
+			if _bootday == lastbootday
+			{"Good morning again %USER."}
+			else
+			{
+				"Good morning %USER."
+				lastbootday = _bootday
+			}
+		}
+		when 12-14 // lunch
+		{
+			if _bootday == lastbootday
+			{"Hello again, %USER."}
+			else
+			{
+				"Many Users take their midday meals around this time, don't they..?"
+				"Good afternood, %USER."
+				lastbootday = _bootday
+			}
+		}
+		when 15-17 // afternoon
+		{
+			if _bootday == lastbootday
+			{"Hello again, %USER."}
+			else
+			{
+				"Good afternoon, "
+				"Good evening, "
+				--
+				"%USER"
+				lastbootday = _bootday
+			}
+		}
+		when 18-20 // evening
+		{
+			if _bootday == lastbootday
+			{"Good evening, %USER"}
+			else
+			{
+				"Good evening. I hope your day has gone well, %USER."
+				lastbootday = _bootday
+			}
+		}
+		when 21-23 // latenight
+		{
+			if _bootday == lastbootday
+			{"Still up, %USER?"; "Hello again, %USER."}
+			else
+			{
+				"Late night."
+				lastbootday = _bootday
+			}
+		}
+	}
+	--
+	if devDebug == "ON"
+	{"\![timerraise,2000,1,OnDevStatMenu]"}
+	--
+	"\![timerraise,2000,1,OnDRPSelect]"
+}
+
+OnIsMorNight
+{
+	if reference0 == "morning"
+	{
+		isMorning = 1
+		"\cThere is nothing wrong with getting an early start to the day."
+	}
+	elseif reference0 == "night"
+	{
+		isMorning = 0
+		"\cWell I hope you are getting enough rest, %USER."
+	}
+	--
+	if devDebug == "ON"
+	{"\![timerraise,2000,1,OnDevStatMenu]"}
+	--
+	"\![timerraise,2000,1,OnDRPSelect]"
+}
+
+//----OnClose
+
+//OnClose runs when you close your ghost. 
+
+OnClose
+{
+	_temphour = passhour
+	_tempmin = passmin
+	if passhour > 1
+	{
+		cumuhour = (cumuhour + passhour)
+		passhour = 0
+	}
+	
+	--
+	
+	
+	if (_temphour == 0) && (_tempmin <= 5)
+	{
+		"Oh. Goodbye then. Time: %(_temphour):%(_tempmin).%(pwrOFF)\_w[500]"
+		passmin = 0
+		passsec = 0
+ 	}
+ 	else 
+ 	{
+		if ghostexcount > 1
+		{
+		_num = RAND(ghostexcount)
+		_pick ="%(ghostexlist[_num])"
+ 		"Goodbye %USER. Goodbye %(_pick). I hope to see you again soon.%(pwrOFF)\_w[500]"
+		}
+		else
+		{
+			"Goodbye %USER. I hope to see you again soon.%(pwrOFF)\_w[500]"
+		}
+		--
+		passmin = 0
+		passsec = 0
+ 	}
+ 	--
+	ERASEVAR("hourlyArray")
+	--
+	"\-" 
+}
+
+OnCloseAll
+{
+	if ghostexcount > 0
+	{
+		if passhour > 1
+		{
+			cumuhour = (cumuhour + passhour)
+			passhour = 0
+		}
+		--
+		passmin = 0
+		passsec = 0
+		--
+		"Goodbye everyone!\_w[500]"
+		case hour
+		{
+		when 0-4
+		{
+			"Goodnight. Or good morning."
+		}
+		when 5-11
+		{
+			"Good morning."
+		}
+		when 12-16
+		{
+			"Good afternoon."
+		}
+		when 17-20
+		{
+			"Good evening."
+		}
+		when 21-23
+		{
+			"Goodnight."
+		}
+		}
+	--
+	ERASEVAR("hourlyArray")
+	--
+	"%(pwrOFF)\-"
+	}
+
+}
+
+OnBasewareUpdating
+{
+	"Updating Baseware %(baseware)...\_w[1000]%(pwrOFF)"
+}
+
+OnBasewareUpdated
+{
+	"%(pwrON)\_w[500]Update complete.\_w[1000]"
+	--
+	OnDiscordPluginCustom
+}
+ //--------State Changing--------
+ //From here on, most of the dialogue will have to do with changing shells, ghosts, or states in some way.
+ 
+ 
+ //----OnWindowStateMinimize
+
+//This will run when you minimize them.
+
+OnWindowStateMinimize
+{
+	"\0\s[0]I will minimise to the taskbar now.\_w[500]"
+	--
+	DiscordCustom.MinimiseSet
+	--
+	"\e"
+}
+
+//--OnWindowStateRestore
+
+OnWindowStateRestore
+{
+	"\0\s[0]I am no longer minimised. Good. It was a bit cramped and rather boring.\_w[500]"
+	--
+	DiscordCustom.MinimiseUnSet
+	--
+	"\e"
+}
+
+
+//--OnGhostChanging
+
+OnGhostChanging
+{
+	ERASEVAR("hourlyArray")
+	--
+	if reference0 == "statusBOT" 
+	{
+		"Reloading.%(pwrOFF)"
+	}
+ 	else //If you're switching to another Ghost.
+	{
+		if passhour > 1
+		{
+			cumuhour = (cumuhour + passhour)
+			passhour = 0
+		}
+		--
+		passmin = 0
+		passsec = 0
+		--
+		"Goodbye %USER.%(pwrOFF)"	
+	}
+	--
+	"\e"
+}
+
+
+//--OnGhostChanged
+
+//A sibling to the above, this runs after the ghost has either reloaded itself, or when you switch from another ghost to this ghost.
+
+OnGhostChanged
+{
+	hourlyArray = IARRAY
+	"%(pwrON)\![set,otherghosttalk,true]\0\s[0]" //this sets up their default poses
+	--
+	OnDiscordPluginCustom
+	--
+	if reference0 == "statusBOT" //As above, this should be the name of your ghost as in install.txt or descript.txt.
+	{
+		"Program Loaded.\_w[500]"
+	}
+	else //If you're switching to them from another ghost...
+	{
+		"\0%(reference0) has unloaded.\_w[500]"
+	}
+	--
+	"\0\s[0]\e"
+}
+
+// When THIS ghost is called. ref0 = body/sakura/kero of calling ghost, ref2 name of calling ghost, ref3 path of call, ref 7 name of called ghost.
+
+
+OnGhostCalled
+{
+	hourlyArray = IARRAY
+	"%(pwrON)\![set,otherghosttalk,true]\0\s[0]" //this sets up their default poses
+	--
+	OnDiscordPluginCustom
+	--
+	"Hello %(reference2)! It is good to see you.\_w[500]\e"
+}
+
+// When another ghost is BEING called from THIS ghost's r-click menu (happens before new ghost loads)
+// ref0 = body of called ghost, ref1 = call method, ref2 = name of called ghost, ref3 = path of called ghost
+
+// OnGhostCalling
+// {
+	
+// }
+
+// When another ghost is called from THIS ghost's r-click menu (happens after new ghost completes boot function)
+// ref0 = body of called ghost, ref1 = boot script, ref2 = name of called ghost, ref7 = name of loaded shell
+
+OnGhostCallComplete
+{
+	
+	if "Hapax" _in_ reference7
+	{
+		"Hello eldritch sibling!\_w[500]"
+	}
+	else
+	{
+		"Hello %(reference0). %(username) decided you should join us. I agree with %(oblPro).\_w[500]"
+	}
+}
+
+// When another ghost is called from a DIFFERENT ghost's r-click menu (happens after new ghost completes boot function)
+// ref0 = body of called ghost, ref1 = boot script, ref2 = name of called ghost, ref7 = name of loaded shell
+
+OnOtherGhostBooted
+{
+	if "Hapax" _in_ reference7
+	{
+		"Hello eldritch sibling!\_w[500]"
+	}
+	else
+	{
+		"Hello %(reference0). %(username) decided you should join us.\_w[500]"
+	}
+}
+
+// This fucker just had to be different...
+// Occurs when switching between other ghosts.
+
+// Ref0 = main body of closed ghost. Ref1 = main body of opened ghost. Ref2 = end Script closed ghost. Ref3 = boot Script opened ghost. Ref4 = closed ghost name. Ref5 = opened ghost name. Ref14 = shell name of closed ghost. Ref15 = shell name of opened ghost.
+
+OnOtherGhostChanged
+{	
+	if "Hapax" _in_ reference15
+	{
+		"GOOD-BYE %(_reference0). \n\nHello Hapax Legomenom.\_w[500]"
+	}
+	elseif "Hapax" _in_ reference14
+	{
+		"Good-bye Hapax Legomenom. \n\nHello %(reference1).\_w[500]"
+	}
+	else
+	{
+		"\0 Good-bye %(reference0). \n\nHello %(reference1).\_w[500]"
+	}
+}
+
+
+// When another ghost is called from a DIFFERENT ghost's r-click menu (happens after new ghost completes boot function)
+// ref0 = body of closed ghost, ref1 = last script, ref2 = name of closed ghost, ref7 = name of loaded shell
+
+OnOtherGhostClosed
+{
+	if "Hapax" _in_ reference7
+	{
+		"Good-bye Hapax Legomenom.\_w[500]"
+	}
+	else
+	{
+		
+		"Good-bye %(reference0).\_w[500]"
+	}
+}
+
+
+
+//--OnShellChanging
+
+//This will run when you change your ghost's shell.
+
+OnShellChanging
+ {
+	if reference0 == "Hypothetical Shell that doesn't actually exist" //reference0 in OnShellChanging is the name of the shell you're swapping to. 
+	{
+		"\0\s[0]%(errorMsg)\_w[500]\e"
+	}
+	else //if you don't have any specific dialogue for a specific shell
+	{
+		"It seems someone out there has made a new skin for the bot to wear.\_w[500]\n\n\n\f[color255,0,0]Interesting.\_w[500]\e"
+	}
+ }
+ 

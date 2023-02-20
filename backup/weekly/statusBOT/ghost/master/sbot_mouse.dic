@@ -1,0 +1,258 @@
+﻿//	                   __  __
+//	                 ,',.\/,.`.
+//	                 \(_,''._)/
+//	                 ._(.||.)_,		                             
+//	                 (,>(__)<.)		   _____                     
+//	                 '`-.==,-'`		  |     | ___  _ _  ___  ___ 
+//	                     )(_		  | | | || . || | ||_ -|| -_|
+//	            _____ _.'   `-.		  |_|_|_||___||___||___||___|
+//	       _.-''    ,','|    \.\
+//	    ,-'         `-.`:  .  :\\_
+//	   /,::::, ,::::, ,>))._ ,' `'`
+//	  // ::::/ /::::/ /    )'/.
+//	 // ::::/ /::::/ /   ,',|`.\
+//	/______________/   /,'||'|))
+//	\ _ _ __ _ _ _ \,':(_ |('((__
+//	 \___(,.)SSt____\,|_)))_))`--`
+//	     /,'
+    
+
+
+// ---- OnMouseMove ----
+
+
+OnMouseMove
+{
+    case reference3 
+	{
+		when 0 
+		{
+			MouseMoveSakura
+		}
+		when 1
+		{
+			"KERO Error: %(errorMsg)"
+		}
+		others 
+		{
+			"CHAR* Error:%(errorMsg)"
+		}
+    }
+}
+
+
+// ---- MouseMoveSakura ----
+// The petting function for your main character.
+
+
+MouseMoveSakura
+{
+    case reference4 
+	{
+	when "Body"
+	{
+		stroke++ 
+		if stroke >= 150
+		{		
+			stroke = 0 //resetting the stroke count
+			petCount++
+			case petCount
+			{
+			when 1-10
+			{
+				"..."
+				"%(sbot)I have been pet?[500]"
+			}
+			when 11-50
+			{
+				"..."
+				"%(sbot)Petting me quite a bit, aren't you?\_w[500]"
+			}
+			when 50-100
+			{
+				"..."
+				"%(sbot)It is quite alright if you do not pet me, you know.\_w[500]"
+			}
+			others
+			{
+				"..."
+				"%(sbot)I see this is going to be a thing...\_w[500]"
+			}
+			
+			}
+		}
+	}
+	when "Face" 
+	{
+		stroke++ 
+		if stroke >= 150
+		{
+			stroke = 0
+			"..."
+		}
+	}
+	others 
+	{
+		stroke = 0
+	}
+    }
+}
+
+
+ 
+// -------- OnMouseDoubleClick --------
+// Checks what button is clicking and which ghost body is being clicked on
+
+OnMouseDoubleClick
+{
+
+	if reference5 == 0 //left button == 0 right button == 1
+	{
+		case reference3 // sakura == 0, kero == 1, char3 == 2, etc
+		{
+		when 0 
+		{
+			MouseDoubleClickSakura
+		}
+		when 1
+		{
+			"OnMouseDoubleClick: %(errorMsg)"
+		}
+		others 
+		{
+			"OnMouseDoubleClick: %(errorMsg)"
+		}
+		}
+    }
+}
+
+
+// -------- MouseDoubleClickSakura --------
+// Effects of being double-clicked
+ 
+ 
+MouseDoubleClickSakura
+{
+
+ 	if reference4 == "Face" //name of collision
+	{
+		OnDRPMenu
+ 	}
+	else
+ 	{
+ 		OnMenuRun
+	}
+ }
+
+
+// ----OnMouseWheel----
+// When the wheel of a mouse moves
+
+OnMouseWheel
+{
+	if reference4 == "Face"
+	{
+		"%(buzz)You flick my face? Rude."
+	}
+}
+
+/* 
+// ----OnMouseDragStart----
+// When dragging of ghost starts
+
+OnMouseDragStart
+{
+	if !talkCheck
+	{"\![sound,play,sfx\bweep.mp3],--volume=%(volume),--window=false]"}
+}
+
+
+// ----OnMouseDragEnd----
+// When dragging of ghost ends.
+
+OnMouseDragEnd
+{
+	if !talkCheck
+	{"\![sound,play,sfx\bwoop.mp3],--volume=%(volume),--window=false]"}
+}
+*/
+
+OnMouseDownEx
+{
+	case reference5
+	{
+	when "middle"
+	{
+		// "\s[0]\i[0]"
+		"%(sbot)How strange..."
+	}
+	when "xbutton1"
+	{
+		// "\s[0]"
+		"%(sbot)What are you doing?"
+	}
+	when "xbutton2"
+	{
+		// "\s[0]"
+		"%(sbot)Hmmm..."
+	}
+	}
+}
+
+
+// Occurs when mouse buttons other than left and right are pressed.
+
+// Reference0
+// X coordinate (local coordinate) of the mouse cursor
+// Reference1
+// The y coordinate (local coordinate) of the mouse cursor
+// Reference2
+// Always 0.
+// Reference3
+// 0 for the main body, 1 for the companion. There are also 2 and later in SSP / CROW.
+// Reference4
+// Collision detection identifier.
+// Reference5
+// Wheel clicks (or 3 button mouse middle buttons) are middle, extended button 1 (usually assigned to "back") is xbutton1, and extended button 2 (usually assigned to "forward") is xbutton2.
+// Reference6
+// After windows7, input from the touch panel (* touch pad is not possible) in a multi-touch compatible environment is touch, input from the mouse etc. is mouse
+
+
+
+// ---- Some of these are questionable but being preserved <3 Era
+
+
+
+//----OnMouseEnter----
+// When the mouse enters any collision area of the ghost.
+
+// OnMouseEnter
+// {
+	// "\0\![sound,play,trill.wav]OnMouseEnter Test.\e"
+// }
+	
+//----OnMouseEnterAll----
+// When the mouse enters the outermost boundary of the ghost.
+
+// OnMouseEnterAll
+// {
+	// "\0\![sound,play,trill.wav]I am currently fuctional.\e"
+// }
+
+//----OnMouseLeave----
+// When the mouse leaves any collision area of the ghost.
+
+// OnMouseLeave
+// {
+	// "\0\![sound,play,trill.wav]OnMouseLeave Test.\e"
+// }
+
+//----OnMouseLeaveAll----
+//When the mouse leaves the outermost boundary of the ghost.
+
+// OnMouseLeaveAll
+// {
+	// "\0\![sound,play,trill.wav]OnMouseLeaveAll Test.\e"
+// }
+
+
