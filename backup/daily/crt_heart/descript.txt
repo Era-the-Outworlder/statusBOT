@@ -1,0 +1,141 @@
+//--Descript.txt
+
+use_self_alpha,1
+use_input_alpha,1
+overlay_outside_balloon,1
+
+charset,UTF-8
+
+type,balloon
+name,CRT Heart
+
+craftman,Era the Outworlder
+craftmanw,Era the Outworlder
+craftmanurl,https://era-the-outworlder.github.io/era_makes_ghosts/
+
+homeurl,https://github.com/Era-the-Outworlder/era_makes_ghosts/tree/main/updates/crt_heart
+
+clickwaitmarker.filename,clickwaitmarker
+clickwaitmarker.x,110
+clickwaitmarker.y,-30
+
+//-- Defining Text Areas
+
+
+origin.x,0
+origin.y,0
+
+validrect.left,39
+validrect.top,37
+validrect.right,315
+validrect.bottom,229
+
+
+wordwrappoint.x,319
+wordwrappoint.y,0
+
+
+font.name,Fixedsys Excelsior
+font.height,18
+font.color.r,255
+font.color.g,255
+font.color.b,255
+
+
+
+
+// windowposition.x,100
+// windowposition.y,0
+// windowposition.limit,1
+
+//-- Other String
+
+
+font.shadowcolor.r,-1
+font.shadowcolor.g,-1
+font.shadowcolor.b,-1
+
+anchor.font.color.r,255
+anchor.font.color.g,0
+anchor.font.color.b,0
+
+
+
+cursor.blendmethod,none
+cursor.style,underline
+
+
+
+cursor.pen.color.r,20
+cursor.pen.color.g,240
+cursor.pen.color.b,20
+
+
+cursor.brush.color.r,200
+cursor.brush.color.g,200
+cursor.brush.color.b,200
+
+
+cursor.font.color.r,20
+cursor.font.color.g,240
+cursor.font.color.b,20
+
+
+
+
+
+
+//----Up scroll arrow
+arrow0.x,330
+arrow0.y,37
+
+//----Down scroll arrow
+arrow1.x,330
+arrow1.y,215
+
+
+
+onlinemarker.x,40
+onlinemarker.y,229
+
+
+sstpmarker.x,100
+sstpmarker.y,230
+
+
+sstpmessage.font.name,Fixedsys Excelsior
+sstpmessage.font.height,13
+sstpmessage.font.color.r,255
+sstpmessage.font.color.g,255
+sstpmessage.font.color.b,255
+sstpmessage.x,115
+sstpmessage.y,229
+
+
+
+number.font.name,Fixedsys Excelsior
+number.font.height,13
+number.font.color.r,255
+number.font.color.g,255
+number.font.color.b,255
+number.xr,320
+number.y,229
+
+
+
+
+//-- Communication/Input Boxes
+
+
+communicatebox.x,11
+communicatebox.y,34
+
+
+communicatebox.width,337
+communicatebox.height,30
+
+communicatebox.font.name,Fixedsys Excelsior
+
+communicatebox.font.color.r,240
+communicatebox.font.color.g,240
+communicatebox.font.color.b,240
