@@ -1,0 +1,21 @@
+charset,UTF-8
+version,1
+option,DisableNoDefineSurfaces
+
+group,__disabled
+{
+10,Null-Kero
+19,Null-Kero Sing
+}
+
+group,F
+{
+scope,0
+0,Default
+
+20,Signboard
+
+
+25,Singing
+
+}

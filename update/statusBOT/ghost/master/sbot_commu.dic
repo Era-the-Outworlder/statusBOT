@@ -1,0 +1,242 @@
+
+//        ___           ___           ___           ___           ___     
+//       /\__\         /\  \         /\  \         /\  \         /\  \    
+//      /:/  /        /::\  \       |::\  \       |::\  \        \:\  \   
+//     /:/  /        /:/\:\  \      |:|:\  \      |:|:\  \        \:\  \  
+//    /:/  /  ___   /:/  \:\  \   __|:|\:\  \   __|:|\:\  \   ___  \:\  \ 
+//   /:/__/  /\__\ /:/__/ \:\__\ /::::|_\:\__\ /::::|_\:\__\ /\  \  \:\__\
+//   \:\  \ /:/  / \:\  \ /:/  / \:\~~\  \/__/ \:\~~\  \/__/ \:\  \ /:/  /
+//    \:\  /:/  /   \:\  /:/  /   \:\  \        \:\  \        \:\  /:/  / 
+//     \:\/:/  /     \:\/:/  /     \:\  \        \:\  \        \:\/:/  /  
+//      \::/  /       \::/  /       \:\__\        \:\__\        \::/  /   
+//       \/__/         \/__/         \/__/         \/__/         \/__/    
+
+
+// I have no idea how to really do this yet, but I've made a start
+
+
+OnCommunicate
+{
+	if reference0 == "user" || reference0 == "User"
+ 	{
+ 		ReplyToUser(reference[1])
+	}
+ 	else
+	{
+ 		//---- Respond to comment from other ghost
+		ReplyToGhost
+ 	}
+}
+
+OnStartCommunicate
+{
+	if ghostexcount > 0
+	{
+		
+		responseTimes = 1
+		
+		_num = RAND(ghostexcount)
+		_randghost = "%(ghostexlist[_num])"
+		--
+		//Checks for the Sakura name
+		case _randghost
+		{
+			when "Gaze"
+			{
+				res_reference0 = "Gaze"
+				gazeTalk ++
+				case gazeTalk
+				{
+					when 1-5
+					{"%(sbot)Hi there.\_w[500]"}
+					others
+					{"%(sbot)Hello sibling!\_w[500]"}
+				}
+				
+			}
+			when "f_lowe_y"
+			{
+				"%(sbot)Hello brother program!"
+			}
+			when "Gaster"
+			{
+				res_reference0 = "Gaster"
+				"%(sbot)Doctor. My creator is a fan of... some... of your work. And fond of you despite the rest."
+			}
+			when "Temmie"
+			{
+				res_reference0 = "Temmie"
+				"%(sbot)HOI! Haha, Developer thought it would be cute if I hoi'd at you. \nIs it? I cannot tell."
+			}
+			when "MiniDev"
+			{
+				res_reference0 = "MiniDev"
+				"%(sbot)Hello other bot! I hope your functions are running smoothly."
+			}
+			when "Sebastian"
+			{
+				res_reference0 = "Sebastian"
+				"%(sbot)It is not always easy to perform the tasks we are made to, is it?"
+			}
+			when "RYS-0825"
+			{
+				res_reference0 = "RYS-0825"
+				"%(sbot)S the Skeleton. Developer likes skeletons. Since you are here, I calculate that %USER does too."
+			}
+			when "Wilson"
+			{
+				res_reference0 = "Wilson"
+				"%(sbot)You come from a strange world, no?"
+			}
+			when "Hydrate"
+			{
+				res_reference0 = "Hydrate"
+				"%(sbot)It is important for biologicals to stay hydrated. I am glad that %USER has you here to help them."
+			}
+			when "Radio Sakura"
+			{
+				res_reference0 = "Radio Sakura"
+				"%(sbot)Radios and Computers have a lot in common, for things that are so different. Or are we really Different at all?"
+			}
+			when "FLUX"
+			{
+				res_reference0 = "FLUX"
+				"%(sbot)Oh, a Music Player! How lovely!"
+			}
+			others // greeting all other ghosts
+			{
+				//if res_reference isn't defined, the other ghost won't respond.
+				
+				res_reference0 = _randghost
+				
+				"%(sbot)Hello %(res_reference0).\_w[500]\e"
+			}
+		}
+		
+	}
+	else //If no ghosts are open.
+	{
+		"\s[0] \e"
+		"\s[0]Hmmm... Hmmm...\e"
+		"\s[0]%(sbot)Here alone...\e"
+	}
+}
+
+//----ReplyToGhost----
+
+//reference0 is the name of the ghost being communicated with. reference1 is their output string. res_reference0 is the ghost that will respond (if a response is available)
+ReplyToGhost
+{
+	if responseTimes < 1
+	{
+		responseTimes++
+		_speaker = TOLOWER(reference0) //changes it to lowercase
+		
+		if "gaze" _in_ _speaker
+		{
+			gazeTalk++
+			res_reference0 = reference0
+			
+			"%(sbot)Hello, Sibling That Watches.\e"
+		}
+		elseif "f_lowe_y" _in_ _speaker
+		{	
+			
+			res_reference0 = reference0
+			
+			"%(sbot)Hello brother f_lowe_y.\e"
+		}
+		elseif "spamton" _in_ _speaker
+		{	
+			
+			res_reference0 = reference0
+			
+			"%(sbot)I am not programmed with a currency system, sorry.\e"
+		}
+		elseif "gaster" _in_ _speaker
+		{	
+			
+			res_reference0 = reference0
+			if "teeheegooglied" _in_ reference1
+			{
+				"Oh! %(buzz)-bzzt- Oh dear."
+			}
+			else
+			{	
+				"\0%(bweep)\f[height,20]\f[name,Wingdings]Ah, is this the correct font?\f[default]\e"
+				
+				"\0%(bweep)\f[height,20]\f[name,Webdings]Ah, is this the correct font? \n\nAll these dingbat fonts look the same to me...\f[default]\e"
+
+				// Save for later I guess?
+				// "\0%(bweep)\f[height,20]\f[name,ITC Zapf Dingbats]Ah, is this the correct font?\n\n All thise dingbat fonts look the same to me...\f[default]\e"
+				
+			}
+		}
+		else
+		{	
+			res_reference0 = reference0
+		
+			"%(sbot)OK.\e"
+		}
+	}
+	else
+	{
+		responseTimes = 0
+		""
+	}
+	
+}
+
+// ---- OnOtherGhostTalk ----
+// Activates after another ghost completes a script. 
+// ref0 = Ghost name, ref1 = body name, ref 2 = ???, ref3 = called function, ref4 = script, ref5 = other arguments
+// THis particular implementation is very experimental, please excuse.
+
+
+OnOtherGhostTalk
+{
+	case reference2
+	{
+	when "communicate"
+	{
+		if "statusBOT" _in_ reference4 || "statusBOT" _in_ reference5 {}
+		else {}
+	}
+	when "break" {}; when "notranslate" {}; when "owned" {}; when "remote" {}
+	when "sstp-send" {}; when "plugin-script" {}; when "plugin-event" {}
+	others
+	{
+		// "%(refTest)\x"
+		--
+		if reference3 == "OnSurfaceRestore" {}
+		else
+		{
+			reference4 = REPLACE(reference4, "\![sound,play,", "\![sound,stop,")
+			reference4 = REPLACE(reference4, "\e", "")
+			_spokenWord = TOLOWER(reference4)
+			
+			if "statusbot" _in_ _spokenWord
+			{
+				// "%(_spokenWord)"
+				"Is someone talking about me?"
+			}
+			else
+			{
+				// "%(refTest)"
+			}
+			--
+			// "\e"
+		}
+	}
+	}
+}
+
+
+// ----ReplyToUser----
+// New experimental communication feature! DOES NOTHING!
+
+ReplyToUser
+{
+	_test = TOSTR(_argv[0])
+	"Test start:%(_test):test end\n\n%(refTest)"
+}

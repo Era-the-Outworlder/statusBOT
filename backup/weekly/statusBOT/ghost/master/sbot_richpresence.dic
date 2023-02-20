@@ -17,24 +17,24 @@ OnDRPMenu
 {
 	"\0\b2Discord Rich Presence\n\n"
 	--
-	'\![*] \q[Change Status,OnDRPSelect]\n\n[half]'
+	'\![*] \q[Change Status,OnDRPSelect]\n[150]'
 	--
-	"\![*] \q[Change DevStatus,OnDevStatMenu]\n\n[half]"
+	"\![*] \q[Change DevStatus,OnDevStatMenu]\n[150]"
 	--
-	"\![*] \q[Set Mood,OnDRPMoodMenu]\n\n[half]"
+	"\![*] \q[Set Mood,OnDRPMoodMenu]\n[150]"
 	--
 	if InDiscordPluginCustom == 1
 	{
-		"\f[color,#fb0300]\![*] \q[Force Update,OnDiscordPluginCustom] \f[color,default]\n\n[half]"
+		"\f[color,#fb0300]\![*] \q[Force Update,OnDiscordPluginCustom] \f[color,default]\n[150]"
 	}
 	else
 	{
-		"\![*] \q[Turn On,OnDiscordPluginCustom]\n\n[half]"
+		"\![*] \q[Turn On,OnDiscordPluginCustom]\n[150]"
 	}
 	--
 	if reference0 == "menu"
 	{
-		"\![*] \q[Main Menu,OnMenuRun]\e"
+		"\![*] \q[Main Menu,OnMenuRun,main]\e"
 	}
 	elseif reference0 == "firstboot"
 	{
@@ -42,7 +42,7 @@ OnDRPMenu
 	}
 	else
 	{
-		"\![*] \q[Close Menu,CANCEL]\e"
+		"\![*] \q[Close Menu,OnMenuRun,cancel]\e"
 	}
 }	
 
@@ -54,7 +54,7 @@ OnDRPSelect
 OnDRPSet
 {
 	drpstatus = SANITISE(reference0)
-	OnDiscordPluginCustom
+	DiscordCustom.UserDetail
 }
 
 DiscordCustom.UserDetail
@@ -135,7 +135,7 @@ OnDevSet
 		smallImageCaption = _cleanRef
 	}
 	--
-	OnDiscordPluginCustom
+	DiscordCustom.DeveloperSet
 }
 
 // Plugin does the work
@@ -191,7 +191,7 @@ OnDRPMoodMenu	// See OnDRPMoodSet, line
 	{"\f[color,#00ffcc]\![*]\q[Tired,OnDRPMoodSet,mood_tired,tired]\f[color,default]"}
 	else{"\![*]\q[Tired,OnDRPMoodSet,mood_tired,tired]"}
 	--
-	"\n\n[half]"
+	"\n[150]"
 	--
 	if "angry" _in_ moodImageText
 	{"\f[color,#00ffcc]\![*]\q[Angry,OnDRPMoodSet,mood_angry,angry]  \f[color,default]"}
@@ -205,7 +205,7 @@ OnDRPMoodMenu	// See OnDRPMoodSet, line
 	{"\f[color,#00ffcc]\![*]\q[Surprised,OnDRPMoodSet,mood_surprised,surprised]\f[color,default]"}
 	else{"\![*]\q[Surprised,OnDRPMoodSet,mood_surprised,surprised]"}
 	--
-	"\n\n[half]"
+	"\n[150]"
 	--
 	if "scared" _in_ moodImageText
 	{"\f[color,#00ffcc]\![*]\q[Scared,OnDRPMoodSet,mood_scared,scared]  \f[color,default]"}
@@ -232,7 +232,7 @@ OnDRPMoodSet
 	else
 	{moodImageText = "Feeling: %(reference1)"}
 	--
-	OnDiscordPluginCustom
+	DiscordCustom.MoodSet
 	--
 	OnDRPMoodMenu
 }
@@ -328,7 +328,7 @@ OnDiscordPluginCustom
 
 OnDiscordPluginCustomEnd
 {
-	InDiscordPluginCustom=0
+	InDiscordPluginCustom = 0
 }
 
 DiscordCustomSet.base

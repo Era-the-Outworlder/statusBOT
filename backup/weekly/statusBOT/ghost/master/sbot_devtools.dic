@@ -150,7 +150,7 @@ reqCheck
     {
         _keyname = var.req.key[_i]
         _value = var.req.value[_i]
-        _display += "%(_keyname): %(_value)\n\n[half]"
+        _display += "%(_keyname): %(_value)\n[150]"
     }
     --
     "\_q\b6\![set,autoscroll,disable]%(_display)\x"
@@ -202,7 +202,7 @@ OnDisplayTestMenu
 	{"\f[color,#00ffcc]\![*]\q[Tired,OnDisplayTestMenu,mood_tired,tired]\f[color,default]"}
 	else{"\![*]\q[Tired,OnDisplayTestMenu,mood_tired,tired]"}
 	--
-	"\n\n[half]"
+	"\n[150]"
 	--
 	if _testText == "angry"
 	{"\f[color,#00ffcc]\![*]\q[Angry,OnDisplayTestMenu,mood_angry,angry]  \f[color,default]"}
@@ -216,7 +216,7 @@ OnDisplayTestMenu
 	{"\f[color,#00ffcc]\![*]\q[Surprised,OnDisplayTestMenu,mood_surprised,surprised]\f[color,default]"}
 	else{"\![*]\q[Surprised,OnDisplayTestMenu,mood_surprised,surprised]"}
 	--
-	"\n\n[half]"
+	"\n[150]"
 	--
 	if _testText == "scared"
 	{"\f[color,#00ffcc]\![*]\q[Scared,OnDisplayTestMenu,mood_scared,scared]  \f[color,default]"}

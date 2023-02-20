@@ -1,0 +1,318 @@
+﻿
+//   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄     ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄            ▄    ▄ 
+//  ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌   ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          ▐░▌  ▐░▌
+//  ▐░█▀▀▀▀▀▀▀█░▌ ▀▀▀▀█░█▀▀▀▀     ▀▀▀▀█░█▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░▌          ▐░▌ ▐░▌ 
+//  ▐░▌       ▐░▌     ▐░▌             ▐░▌     ▐░▌       ▐░▌▐░▌          ▐░▌▐░▌  
+//  ▐░█▄▄▄▄▄▄▄█░▌     ▐░▌ ▄▄▄▄▄▄▄▄▄▄▄ ▐░▌     ▐░█▄▄▄▄▄▄▄█░▌▐░▌          ▐░▌░▌   
+//  ▐░░░░░░░░░░░▌     ▐░▌▐░░░░░░░░░░░▌▐░▌     ▐░░░░░░░░░░░▌▐░▌          ▐░░▌    
+//  ▐░█▀▀▀▀▀▀▀█░▌     ▐░▌ ▀▀▀▀▀▀▀▀▀▀▀ ▐░▌     ▐░█▀▀▀▀▀▀▀█░▌▐░▌          ▐░▌░▌   
+//  ▐░▌       ▐░▌     ▐░▌             ▐░▌     ▐░▌       ▐░▌▐░▌          ▐░▌▐░▌  
+//  ▐░▌       ▐░▌ ▄▄▄▄█░█▄▄▄▄         ▐░▌     ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌ ▐░▌ 
+//  ▐░▌       ▐░▌▐░░░░░░░░░░░▌        ▐░▌     ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌
+//   ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀          ▀       ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀    ▀ 
+//                                                                              
+// -------- AI Talk --------
+//This is where all their random conversations are stored.
+
+// ---- OnAiTalk ----
+
+OnAiTalk
+{
+	if CHAIN.IDName
+	{
+		ChainTalk
+	}
+	elseif TOSTR(offscreenflag) != ""
+	{
+		OnOffscreenTalk
+	}
+	else
+	{
+		if RAND(100) < (communicateratio - 1)
+		{
+			OnStartCommunicate
+		}
+		else
+		{
+			RandomTalk
+		}
+	}
+}
+
+
+//--RandomTalk 
+ 
+// %(hourlyArray)
+// %(sbot)
+
+
+RandomTalk : nonoverlap_pool
+{	
+	"%(beeboop)\_q\n\n\n\n\f[align,center] Beep-boop \f[default]"
+
+	"%(boobeep)\_q\n\n\n\n\f[align,center] Boop-beep \f[default]"
+
+	"%(hum)\_q\n\n\n\n\f[align,center] Hmm-hmmm... \f[default]"
+
+	"%(sbot)\_q\n\n\n\f[align,center] 01100010 \n 01100101 \n 01100101 \n 01110000 \f[default]"
+
+	"%(sbot)\_q\n\n\n\f[align,center] 01100010 \n 01101111 \n 01101111 \n 01110000 \f[default]"
+	
+	"%(buzz)\_q\n\n\n\n\f[align,center] -bzzt- \f[default]"
+	
+	"%(sbot)\_q\n\n\n\n\f[align,center] -%(disTime)- \f[default]"
+	 
+	 
+	// -------- Conditionals --------
+
+		
+	if ASEARCH("saidtimeslot",hourlyArray) == -1
+	{OnTimeTalk}
+	
+	if ASEARCH("saidweekday",hourlyArray) == -1
+	{OnDayTalk}
+	
+	if ASEARCH("saidmonthly",hourlyArray) == -1
+	{OnMonthTalk}
+	
+	
+}	
+
+
+// ---- Time Functions ----
+// Keeps track of if an hour has passed. Just ignore this.
+
+// FlagArray ,= "newflag" and ASEARCH("newflag",FlagArray) != -1
+
+
+OnTimeTalk
+{
+	"%(sbot)It's %(dishour):%(dismin)"
+	--
+	case hour
+	{
+		when 0-4 // weehours
+		{
+			" in the morning."
+		}
+		when 5-8 // earlymorning
+		{
+			" in the morning."
+		}
+		when 9-11 // morning
+		{
+			" in the morning."
+		}
+		when 12-14 // lunch
+		{
+			" in the afternoon."
+		}
+		when 15-17 // afternoon
+		{
+			" in the afternoon."
+		}
+		when 18-20 // evening
+		{
+			" in the evening."
+		}
+		when 21-23 // latenight
+		{
+			" at night."
+		}
+	}
+	--
+	"\nI have been running for \n%(passhour) hours and %(passmin) minutes."
+	--
+	"\e:eval=hourlyArray ,= 'saidtimeslot'"
+}
+
+OnDayTalk
+{
+	"\n\n%(sbot)Today is "
+	--
+	if weekday == 0
+	{
+		"Sunday."
+	}
+	if weekday == 1
+	{
+		"Monday."
+	}
+	if weekday == 2
+	{
+		"Tuesday."
+	}
+	if weekday == 3
+	{
+		"Wednesday."
+	}
+	if weekday == 4
+	{
+		"Thursday."
+	}
+	if weekday == 5
+	{
+		"Friday."
+	}
+	if weekday == 6
+	{
+		"Saturday."
+	}
+	--
+	"\e:eval=hourlyArray ,= 'saidweekday'"
+}
+
+OnMonthTalk
+{
+	"\n\n%(sbot)The current month is "
+	--
+	if month == 1
+	{
+		"January."
+	}
+	if month == 2
+	{
+		"February."
+	}
+	if month == 3
+	{
+		"March."
+	}
+	if month == 4
+	{
+		"April."
+	}
+	if month == 5
+	{
+		"May."
+	}
+	if month == 6
+	{
+		"June."
+	}
+	if month == 7
+	{
+		"July."
+	}
+	if month == 8
+	{
+		"August."
+	}
+	if month == 9
+	{
+		"September."
+	}
+	if month == 10
+	{
+		"October."
+	}
+	if month == 11
+	{
+		"November."
+	}
+	if month == 12
+	{
+		"December."
+	}
+	--
+	"\e:eval=hourlyArray ,= 'saidmonthly'"
+}
+
+
+
+
+
+// ---- OnSecondChange ----
+// Triggered by System Time 1-second tic
+
+OnSecondChange
+{
+	if passsec == 59
+ 	{
+	 	passsec = 0
+		--
+		if passmin == 59
+		{
+			passmin = 0
+			passhour ++
+			--
+			ERASEVAR("hourlyArray")
+			--
+			hourlyArray = IARRAY
+		}
+		else
+		{
+			passmin ++
+		}
+	}
+ 	else
+ 	{
+	 	passsec ++
+	}
+}
+
+
+OnHourTimeSignal
+{
+ 	if minute == 0 
+	{
+ 		if hour == 12 
+		{
+ 			"%(sbot)\_q\n\n\n\n\n\f[align,center] It is noon. \f[default]"
+		}
+ 		elseif hour == 0
+		{
+ 			"%(sbot)\_q\n\n\n\n\n\f[align,center] It is midnight. \f[default]"
+		}
+		else
+		{
+			"%(sbot)\_q\n\n\n\n\n\f[align,center] It is %(dishour) o'clock. \f[default]"
+		}
+	}
+}
+
+
+// ----- OnOffscreen -----
+
+OnOffscreen
+{
+	if  "0" !_in_ TOSTR(reference0)
+	{
+		offscreenflag[0] = ""
+	}
+	elseif "0" _in_ TOSTR(reference0) && offscreenflag[0] != "0"
+	{
+		offscreenflag[0] = "0"
+	}
+	else
+	{
+		"%(errorMsg)"
+	}
+	--
+	OnOffscreenTalk
+}
+
+// ----- OnOffscreenTalk -----
+
+OnOffscreenTalk : nonoverlap_pool
+{
+	if offscreenflag[0] == "0"
+	{
+		"%(sbot)\0\s[0]I have been moved offscreen. Press Ctrl-Shift-F12 to return me to my default position.\_w[500]"
+	}
+	else
+	{
+		"%(sbot)\0\s[0]Thank you! I definitely prefer being onscreen."
+	}
+}
+
+
+// -------- OnSurfaceRestore --------
+// Default pose
+
+OnSurfaceRestore
+{	
+	"\0\s[0]\e"	
+}
+
+ 

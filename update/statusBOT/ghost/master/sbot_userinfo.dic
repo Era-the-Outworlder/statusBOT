@@ -1,0 +1,853 @@
+//  _   _                    _____          __        
+// | | | |                  |_   _|        / _|       
+// | | | | ___   ___  _ __    | |   _ __  | |_   ___  
+// | | | |/ __| / _ \| '__|   | |  | '_ \ |  _| / _ \ 
+// | |_| |\__ \|  __/| |     _| |_ | | | || |  | (_) |
+//  \___/ |___/ \___||_|     \___/ |_| |_||_|   \___/ 
+
+// Name, Pronouns, Birthdate, all in one.
+
+// Gets the info the user may have set in SSP's settings and separates it into global variables
+USER
+{
+	"%(username)"
+	"User"
+}
+
+OnNotifyUserInfo
+{
+
+	menuNName = SHIORI3FW.UserName
+	menuRName = SHIORI3FW.UserNameFull
+	menuBYear = TOSTR(SHIORI3FW.UserBirthday[0])
+	menuBMonth = TOSTR(SHIORI3FW.UserBirthday[1])
+	menuBDay = TOSTR(SHIORI3FW.UserBirthday[2])	
+}
+
+//-------- OnTeachName --------
+//This is called from the config menu in the main character's double click menu when the user says they want to change their name.
+
+OnTeachName	
+{
+	if reference0 == "menu" //function was called from User Config
+		{	
+			"\c\t"
+			--
+			"%(sbot)\0\s[0]What name would you like me to call you by instead? \![open,inputbox,OnNameTeach,-1]"
+		}
+	else
+		{
+			"\c\t"
+			--
+			"%(sbot)\0\s[0]What is your name? \![open,inputbox,OnNameTeach,-1]\x\s[0]"
+		}
+}
+
+
+//--OnNameTeach
+//This is where the user inputs their name and the ghost analyzes it.
+
+OnNameTeach
+{
+	_tempname = TOSTR(reference0) //this stores the name value from reference0 in _tempname. it will be stripped of punction to be checked.
+	_setname = TOSTR(reference0) //is a duplicate that may be changed by events. this is the version that will be set as the username.
+	
+	// There is surely a better way to strip out punctuation, but I haven't got it in my head
+	_tempname = TOLOWER(_tempname) //changes it to lowercase
+	_tempname = REPLACE(_tempname," ","") //removes spaces
+	_tempname = REPLACE(_tempname,".","") //removes periods
+	_tempname = REPLACE(_tempname,"-","") //removes dashes
+	_tempname = REPLACE(_tempname,"_","") //removes underscores
+	
+	_selfname = TOLOWER(sakuraname)
+	
+	if reference0 == _selfname
+		{
+		"%(sbot)\0\s[0]Oh, that is my name too. I think it might be a little confusing for me to call you that. Is there something else I can call you?\n"
+		--
+		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[Keep,OnNameDone,keepghostname,%(_tempname)]\n"
+	}
+	elseif reference0 == "" //This is if the user doesn't put in a name at all or puts one that is only spaces, periods, dashes, or uderscores since that'd also get awkward in dialogue.
+	{
+		_setname = "NULL" //this sets the user's name.
+	
+		"%(sbot)\0\s[0]Oh, that... I think it might be a little difficult for me to call you that. I would have to call you %(CHR(34))NULL%(CHR(34)) or something like that. Is there something else I can call you?\n"
+		--
+		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnNameDone,keepname,%(_setname)]\n"
+	}
+	elseif reference0 == "flowey" 
+	{
+		"%(sbot)\0\s[0]Oh! I have a brother called f_lowe_y. I think it might be a little confusing for me to call you that. Is there something else I can call you? It is fine if there is not, I do not mind.\n"
+		--
+		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnNameDone,keepname,%(_setname)]\n"
+	}
+	elseif reference0 == "gaze" 
+	{
+		"%(sbot)\0\s[0]I have a sibling that goes by that name... Sometimes. I think it might be a little confusing for me to call you that. Is there something else I can call you? It is fine if there is not, I do not mind.\n"
+		--
+		"\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnNameDone,keepname,%(_setname)]\n"
+	}
+	elseif reference0 == "Era" 
+	{
+		'%(sbot)\0\s[0]Developer, is that you?\n\n'
+		--
+		'\![*] \q[No,"script:\cOh. It is rather uncomfortable for me to call another by my creator%(CHR(39))s handle. Please allow me to call you something else.\n\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnNameDone,notdev,%(_setname)]"]\n \n[-100]\f[align,right]\![*] \q[Yes.,"script:It is good to see you Developer! \nPlease enter your password: \![open,passwordinput,OnDeveloperPassword]"] \n'
+	}
+	elseif reference0 == "BetaTest" 
+	{
+		'%(sbot)\0\s[0]Developer, is that you?\n\n'
+		--
+		'\![*] \q[No,"script:\cOh. It is rather uncomfortable for me to call another by my creator%(CHR(39))s handle. Please allow me to call you something else.\n\![*] \q[Call me...,OnTeachName]\n \n[-100]\f[align,right]\![*] \q[No.,OnNameDone,notdev,%(_tempname)]"]\n \n[-100]\f[align,right]\![*] \q[Yes.,"script:It is good to see you Developer! \nPlease enter your password: \![open,passwordinput,OnDeveloperPassword]"] \n'
+	}
+	elseif _tempname == username //checks against existing username
+	{
+		
+		"%(sbot)\0\s[0]That is already your username. Are you trying to change something else? \_w[500]\n[150]"
+		--
+		
+		"\![*] \q[Yes,OnHonorificChoice,0,%(_setname)]\n \n[-100]\f[align,right]\![*] \q[No,OnNameDone,repeat,%(_setname)]\n"
+	}
+	else //if the user put in something not specified above, ie a proper name the ghost can use. 
+	{		
+		"%(sbot)\0\s[0]Do you want me to use a title or honorific when addressing you? \_w[500]\n[150]"
+		--
+		"\![*] \q[Yes,OnHonorificChoice,0,%(_setname)]\n \n[-100]\f[align,right]\![*] \q[No,OnNameDone,,%(_setname)]\n"
+	}
+}
+
+OnDeveloperPassword
+{
+	if reference0 == developerPassword
+	{
+		username = "Era"
+		"%(sbot)\0\s[0]I'll set myself into debug mode-\_w[1000]"
+		--
+		devDebug = "ON"
+		"\nWhat will your devMessage be?\![open,input,OnDevSet,,,--reference=naming]\x"
+	}
+	else
+	{
+		username = "Usuper"
+		"%(sbot)\0\s[0]\0\s[0]Liar. \nAccess to Developer's toolkit denied.\![timerraise,500,1,OnNameDone,notdev2,%(username)]"
+	}
+
+}
+
+
+	
+OnHonorificChoice
+{
+	if reference0 == 0
+	{
+		"\![*] \q[Mx.,OnHonorificChoice,1]\n/
+		\![*] \q[Mr.,OnHonorificChoice,2]\n/
+		\![*] \q[Ms.,OnHonorificChoice,3]\n/
+		\![*] \q[Mrs.,OnHonorificChoice,4]\n/
+		\![*] \q[-ssi,OnHonorificChoice,5]\n/
+		\![*] \q[-san,OnHonorificChoice,6]\n/
+		\![*] \q[No title,OnNameDone,,%(reference1)]"
+	}
+	else
+	{
+		case reference0
+		{
+			when 1
+			{_setname = "Mx. " + reference1}
+			when 2
+			{_setname = "Mr. " + reference1}
+			when 3
+			{_setname = "Ms. " + reference1}
+			when 4
+			{_setname = "Mrs. " + reference1}
+			when 5
+			{_setname = reference1 + "-ssi"}
+			when 6
+			{_setname = reference1 + "-san"}
+		}
+		--
+		"\![timerraise,500,1,OnNameDone,,%(_setname)]\n"
+	}
+}
+
+// ---- OnNameDone ----
+//Signifies that it's done, moves on to wherever else
+
+
+OnNameDone
+{
+	if reference0 == "keepghostname" // if user has the same name as the ghost
+	{
+		username = reference1
+		if firstBoot == 1 || firstBoot == 2 //this checks for the flag that was set during the firstBoot sequence
+		{
+			"%(sbot)\0\s[0]Name Confirmed as %(username). \_w[500] \b[-1]\c"
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		else
+		{
+			"%(sbot)\0\s[0]Name Confirmed as %(username).  \_w[500] \e"
+		}
+	}
+	elseif reference0 == "keepname"
+	{
+		if firstBoot == 1 || firstBoot == 2 //this checks for the flag that was set during the firstBoot sequence
+		{
+			"%(sbot)\0\s[0]OK. I'll call you %(CHR(34))%(username)%(CHR(34)).  \_w[500] \b[-1]\c"
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		else
+		{
+			"%(sbot)\0\s[0]OK. %(CHR(34))%(username)%(CHR(34)) is it, user. \_w[500] \e"
+		}
+	}
+	elseif reference0 == "notdev"
+	{
+		
+		"%(sbot)\0\s[0]OK. I will call you by that name. However, access to their toolkit will not be granted.\_w[500]" 
+		--
+		"\c%(sbot)\0\s[0]Do you want me to use a title or honorific when addressing you? \_w[500]\n[150]"
+		--
+		"\![*] \q[Yes,OnHonorificChoice,0,%(_setname)]\n \n[-100]\f[align,right]\![*] \q[No,OnNameDone,,%(_setname)]\n"
+	}
+	elseif reference0 == "notdev2"
+	{
+		if firstBoot == 1 || firstBoot == 2 //this checks for the flag that was set during the firstBoot sequence
+		{
+			"Moving on."
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		else
+		{
+			"%(sbot)\0\s[0]Name set. %(username)."
+		}
+	}
+	elseif reference0 == "repeat" //called only if there was an existing value for username somehow, and the user entered the same name again.
+	{
+		if firstBoot == 1 || firstBoot == 2 
+		{
+			"%(sbot)\0\s[0]I will call you that then. \_w[500] \b[-1]\c"
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		else
+		{
+			"%(sbot)\0\s[0]No change to username made.\_w[500] \e"
+		}
+	}
+	else
+	{
+		if firstBoot == 1 
+		{
+			"%(sbot)\0\s[0]I have learned your name, \_w[500]%(username).\0\_w[500]\_s\b[-1]\c\_s"
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		elseif firstBoot == 2
+		{
+			"%(sbot)\0\s[0]\_w[500]%(username). Ok then!\0\_w[500]\_s\b[-1]\c\_s"
+			--
+			"\![timerraise,1000,1,OnTeachPronouns]"
+		}
+		else
+		{
+			"%(sbot)\0\s[0]Alright, %(username)!\e"
+		}
+	}
+}
+
+
+// -------- OnTeachPronouns --------
+// This is called from either OnFirstBoot or the User Config menu to set/change the user's pronouns
+
+OnTeachPronouns
+{
+	"\t\c\0\b2Please select your pronouns:\_w[500]\n\n[150]\_q/
+	\n\n\n/
+	\![*] \q[He-His-Him,OnSetPronouns,1]\n/
+	\![*] \q[She-Her-Her,OnSetPronouns,2]\n/	
+	\![*] \q[They-Their-Them,OnSetPronouns,3]\n/
+	\![*] \q[Other,OnTeachCustomPronoun]\0\s[0]"
+
+}	
+
+OnSetPronouns
+{
+	if reference0 == 1
+	{
+		nomPro = "he"
+		oblPro = "him"
+		posPro = "his"
+	}
+	elseif reference0 == 2
+	{
+		
+		nomPro = "she"
+		oblPro = "her"
+		posPro = "her"
+	}
+	elseif reference0 == 3
+	{
+		
+		nomPro = "they"
+		oblPro = "them"
+		posPro = "their"
+	}
+	elseif reference0 == 0
+	{
+		nomPro = reference1
+		oblPro = reference2
+		posPro = reference3
+	}
+	--
+	
+	if firstBoot == 1
+	{
+		"\0\s[0]You have entered your pronouns as %(nomPro), %(oblPro), and %(posPro). \n\nNow I can call you by the correct pronouns.\n\n You can always change this from the User Configuration Menu.\_w[500]\_s\b[-1]\c\_s"
+		--
+		"\![timerraise,1000,1,OnGetBirthday]"	
+	}
+	elseif firstBoot == 2
+	{
+		"\0\s[0]You have entered your pronouns as %(nomPro), %(oblPro), and %(posPro). \n\nNow I can call you by the correct pronouns.\n\n You can always change this from the User Configuration Menu.\_w[500]\_s\b[-1]\c\_s"
+		--
+		"\![timerraise,1000,1,OnGetBirthday]"	
+	}
+	else
+	{
+		"\0\s[0]You have entered your pronouns as %(nomPro), %(oblPro), and %(posPro). \n\nNow I can call you by the correct pronouns.\n\n You can always change this from the User Configuration Menu.\_w[500]\_s\b[-1]\c\_s"
+	}
+
+}
+
+
+OnTeachCustomPronoun
+{
+	"\0Enter your nominative pronoun, ex.'they'\![open,inputbox,OnNominativeTeach,-1]"
+}
+
+//---- Teaching each pronoun ----
+
+OnNominativeTeach
+{
+	_nounN = SANITISE(reference0) //this stores the pronoun value temporarily in reference0
+
+	_check = REPLACE(reference0," ","")
+	if _check  == "" // This is if the user doesn't enter any text
+	{
+		"\0You did not type anything into the box. Whoops! \![open,inputbox,OnNominativeTeach,]"
+	}
+	else //Continuing on
+	{
+		"\0Enter your oblique pronoun, ex.'them'\![open,inputbox,OnObliqueTeach,--reference=%_nounN]"
+	}
+}
+
+
+OnObliqueTeach
+{
+	_nounO = SANITISE(reference0) //this stores the pronoun value temporarily in reference0
+	_nounN = reference2
+	_check = REPLACE(reference0," ","")
+	if _check  == "" // This is if the user doesn't enter any text
+	{
+		"\0You did not type anything into the box. Whoops!\![open,inputbox,OnObliqueTeach,--reference=%_nounN]"
+	}
+	else //Continuing on
+	{
+		"\0Enter your possessive pronoun, ex.'their'\![open,inputbox,OnPossessiveTeach,--reference=%_nounN,--reference=%_nounO]"
+	}
+}
+
+
+OnPossessiveTeach
+{
+
+	_nounP = SANITISE(reference0) //this stores the pronoun value temporarily in reference0
+	_nounO = reference3
+	_nounN = reference2
+	_check = REPLACE(reference0," ","")
+	if _check  == "" // This is if the user doesn't enter any text
+	{
+		"\0You did not type anything into the box. Whoops!\![open,inputbox,OnPossessiveTeach,--reference=%_nounN,--reference=%_nounO]"
+	}
+	else //Continuing on
+	{
+		"\t\0\s[0]You entered %(_nounN), %(_nounO), and %(_nounP).\nDoes that seem right? \_w[500]\n[150]/
+		\_q\![*]\q[Looks good!,OnSetPronouns,0,%_nounN,%_nounO,%_nounP]\n/
+		\![*]\q[Let's try that again...,OnTeachCustomPronoun]"
+			
+	}
+}
+	
+// Function called to have the user input their birthday. 
+// Name retained for compatibility w/GT Template ghosts.
+OnGetBirthday	
+{
+	OnNotifyUserInfo
+	--
+	// This is setting up in case today is the user's birthday.
+	// Format retained for compatibility w/GT Template ghosts.
+
+	
+	"\0\s[0]\n\n\nEnter Birthdate. \n/
+	\![open,dateinput,OnInputBirthdate,,%(menuBYear),%(menuBMonth),%(menuBDay)]\x\n"
+	
+}
+
+// The function that evaluates the input birthdate
+OnInputBirthdate
+{
+	_a = SPLIT(reference[0],',')
+	_tempyear = TOINT(_a[0])
+	_tempmonth  = TOINT(_a[1])
+	_tempday  = TOINT(_a[2])
+	
+	{	
+		//assigning year # and print version to global vars
+		bornyear = _tempyear
+		bornyearprint = ""
+		_cent = ""
+		_dec = ""
+		_yr = ""
+		_error = ""
+		
+		_num = IARRAY 
+		 
+		// Separates digits of year to be evaluated separately
+		for _i=0;_i<4;_i++
+		{
+			_num[_i] = SUBSTR(_tempyear,_i,1)
+		}
+		--
+		if _num[0] == 1 // Year is 1XXX
+		{
+			if _num[1] == 6 && _num[2] == 0 {_cent = "Sixteen hundred and "}
+			elseif _num[1] == 6 {_cent ="Sixteen "}
+			elseif _num[1] == 7 && _num[2] == 0 {_cent ="Seventeen hundred and "}
+			elseif _num[1] == 7 {_cent ="Seventeen "}
+			elseif _num[1] == 8 && _num[2] == 0 {_cent ="Eighteen hundred and "}
+			elseif _num[1] == 8 {_cent ="Eighteen "}
+			elseif _num[1] == 9 && _num[2] == 0 {_cent ="Nineteen hundred and "}
+			elseif _num[1] == 9 {_cent ="Nineteen "}
+			else{"%(errorMsg)"}	
+		}
+		elseif _num[0] == 2 // Year is 2XXX
+		{
+			// Year is 200X
+			if _num[1] == 0 && _num[2] == 0 {_cent = "Two thousand "}
+			// Year is 20XX
+			elseif _num[1] == 0 {_cent ="Twenty "}
+			else
+			{
+				_error = "The distant future "
+				"\![set,autoscroll,disable]The Developer considered the likelihood of anyone continuing to use this software into the 21st century or beyond to be highly unlikely. \nThey would like to apologise to any time-travellers, historians or collectors of ancient technology this may inconvinence.\x"
+			}
+		}	
+		else // Year is 3000+
+		{
+			_error = "The far-flung future "
+			"\![set,autoscroll,disable]The Developer considered the likelihood of anyone continuing to use this software into the 30th century or beyond to be unlikely to the extreme. \nThey would like to apologise to any time-travellers, historians or collectors of ancient technology this may inconvinence.\x"
+		}
+		--		
+		if _num[2] == 0 // Year is XX0X
+		{
+			_dec = ""
+		}
+		elseif _num[2] == 1 // Year is XX1X
+		{
+			_dec = "teen"
+			if _num[3] == 1 {_yr = "eleven"}
+			elseif _num[3] == 2 {_yr ="twelve"}
+			elseif _num[3] == 3 {_yr ="thirteen"}
+			elseif _num[3] == 4 {_yr ="fourteen"}
+			elseif _num[3] == 5 {_yr ="fifteen"}
+			elseif _num[3] == 6 {_yr ="sixteen"}
+			elseif _num[3] == 7 {_yr ="seventeen"}
+			elseif _num[3] == 8 {_yr ="eighteen"}
+			elseif _num[3] == 9 {_yr ="nineteen"}
+			else{_yr ="ten"}
+		}
+		else
+		{
+			if _num[2] == 2 {_dec ="twenty"}
+			elseif _num[2] == 3 {_dec ="thirty"}
+			elseif _num[2] == 4 {_dec ="forty"}
+			elseif _num[2] == 5 {_dec ="fifty"}
+			elseif _num[2] == 6 {_dec ="sixty"}
+			elseif _num[2] == 7 {_dec ="seventy"}
+			elseif _num[2] == 8 {_dec ="eighty"}
+			elseif _num[2] == 9 {_dec ="ninety"}
+			else{""}	
+		}
+		--
+		if _num[3] == 1 {_yr = "one"}
+		elseif _num[3] == 2 {_yr ="two"}
+		elseif _num[3] == 3 {_yr ="three"}
+		elseif _num[3] == 4 {_yr ="four"}
+		elseif _num[3] == 5 {_yr ="five"}
+		elseif _num[3] == 6 {_yr ="six"}
+		elseif _num[3] == 7 {_yr ="seven"}
+		elseif _num[3] == 8 {_yr ="eight"}
+		elseif _num[3] == 9 {_yr ="nine"}
+		else{""}	
+	--
+	if _error != "" {bornyearprint = _error}
+	elseif _dec == "" {bornyearprint = "%(_cent)%(_yr)"}
+	elseif _yr == "" {bornyearprint = "%(_cent)%(_dec)"}
+	else {bornyearprint = "%(_cent)%(_dec)-%(_yr)"}
+		
+	}
+	--
+	{	// assigning month# and name to globar vars
+		bornmonth = _tempmonth
+		if _tempmonth == 1 {bornmonthprint = "January"}
+		elseif _tempmonth == 2 {bornmonthprint = "February"}
+		elseif _tempmonth == 3 {bornmonthprint = "March"}
+		elseif _tempmonth == 4 {bornmonthprint = "April"}
+		elseif _tempmonth == 5 {bornmonthprint = "May"}
+		elseif _tempmonth == 6 {bornmonthprint = "June"}
+		elseif _tempmonth == 7 {bornmonthprint = "July"}
+		elseif _tempmonth == 8 {bornmonthprint = "August"}
+		elseif _tempmonth == 9 {bornmonthprint = "September"}
+		elseif _tempmonth == 10 {bornmonthprint = "October"}
+		elseif _tempmonth == 11 {bornmonthprint = "November"}
+		elseif _tempmonth == 12 {bornmonthprint = "December"}
+	}
+	--
+	{
+		bornday = _tempday
+		borndayprint = Printday
+		birthdayprint = "%(bornmonthprint) %(borndayprint)"
+		
+	}
+	--
+	// Checks birthday against conditionals for finishing dialogue
+	"%(birthchecked)" 
+	--
+	if firstBoot == 1 || firstBoot == 2
+	{
+		"\_w[500]\_s\b[-1]\c\_s"
+		--
+		"%(birthdayprint) of %(bornyearprint). \nI'll remember that, %(username).\![timerraise,1000,1,OnFBContinue]"
+	}
+	else
+	{
+		"%(birthdayprint) of %(bornyearprint). \nI'll remember that, %(username).\e"
+	}
+}
+
+// This adds an appropriate ordinal suffix to the day.
+
+Printday
+{
+	if bornday == 1 || bornday == 21 || bornday == 31
+	{
+	"%(bornday)st"
+	}
+	elseif bornday == 2 || bornday == 22
+	{
+	"%(bornday)nd"
+	}
+	elseif bornday == 3 || bornday == 23
+	{
+	"%(bornday)rd"
+	}
+	else
+	{
+	"%(bornday)th"
+	}
+}	
+
+// ----birthchecked----
+
+
+birthchecked
+{
+	if bornmonth == month && bornday == day
+	{
+		if bornmonth == 1
+		{
+			if bornday == 1
+			{
+				"It is your birthday today. \nThe first day of a new year.\_w[1500]"
+			}
+			elseif bornday == 14
+			{
+				"It is your birthday today. \nThe first day of a new year, by some accounts. Make it a good one, %(username)\_w[1500]"
+			}			
+			else
+			{
+				"Happy birthday, %(username).\_w[1500]"
+				"It is your birthday today. Stay warm, _user. \_w[1500]"
+			}
+		}
+		elseif bornmonth == 2
+		{
+			if bornday == 2
+			{
+				"Have you ever gotten the feeling that you have done this before? Happy birthday. "
+			}
+			elseif bornday == 14
+			{
+				"I hope you have a lovely birthday, %(username)"
+			}
+			elseif bornday == 15
+			{
+				"\0\s[0]The world my brother is from was created on this day. Does this mean you share a birthday?"
+			}
+			else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[2000]"
+				
+			}
+		}
+		elseif bornmonth == 3
+		{
+			if bornday == 14
+			{
+				"I will now recite pi to the 1000th decimal.\_w[500]\c%(piDay)"
+				--
+				"\n\nHappy Birthday!"
+			}
+			else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[1000]\_w[500]"
+				
+			}
+		}
+		elseif bornmonth == 4
+		{
+			if bornday == 1
+			{
+				"What a funny day.\_w[1500]"
+			}
+			else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[2000]"
+				"It is your birthday today. How is the weather?\_w[1500]"
+			}
+		}
+		elseif bornmonth == 5
+		{
+			if bornday == 1
+			{
+				"Happy May Day! And Happy Birthday!\_w[1500]"
+			}
+			elseif bornday == 14
+			{
+				"It is your birthday today.\n Take a look at the sky and celebrate.\_w[1500]"
+			}
+			else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[2000]"
+			}
+		}
+		elseif bornmonth == 6
+		{
+			// if bornday == 6
+			// {
+				// ""
+			// }
+			// else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[2000]"
+			}
+		}
+		elseif bornmonth == 7
+		{
+			if bornday == 31
+			{
+				"\0\s[0]Happy birthday %(username)! My brother f_lowe_y was released today in 2016. So I think that you share a birthday?"
+			}
+			else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[2000]"
+			}
+		}
+		elseif bornmonth == 8
+		{
+			// if bornday == 1
+			// {
+				
+				
+			// }
+			// else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[2000]"
+			}
+		}
+		elseif bornmonth == 9
+		{
+			// if bornday == 1
+			// {
+				// ""
+			// }
+			// else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[2000]"
+			}
+		}
+		elseif bornmonth == 10
+		{
+			if bornday == 31
+			{
+				"Halloween is celebrated today too. Have a spooky birthday!"
+			}
+			else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[2000]"
+			}
+		}
+		elseif bornmonth == 11
+		{
+			if bornday == 13
+			{
+				if username == "Era" && devDebug == "ON"
+				{"All set, Developer! Happy testing!"}
+				else
+				{"Oh, you share a birthday with my Developer! What a happy coincidence!\n Happy birthday and best wishes \f[color,#0099cc]from both of us.\f[color,default]"}
+			}
+			else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[2000]"
+			}
+		}
+		elseif bornmonth == 12
+		{
+			// if bornday == 25
+			// {
+				// ""
+			// }
+			// else
+			{
+				"\0\s[0]Happy birthday, %(username).\_w[2000]"
+			}
+		}
+	}
+	else // Messages for when it is NOT the user's birthday
+	{
+		if bornmonth == 1
+		{
+			if bornday == 1
+			{
+				"The first day of a new year.\_w[1500]"
+			}
+			elseif bornday == 14
+			{
+				"The first day of a new year, by some accounts.\_w[1500]"
+			}			
+			else
+			{
+				genericBirthday
+			}
+		}
+		elseif bornmonth == 2
+		{
+			if bornday == 15
+			{
+				"\0\s[0]The world my brother is from was created on that day."
+			}
+			else
+			{
+				genericBirthday
+			}
+		}
+		elseif bornmonth == 3
+		{
+			if bornday == 14
+			{
+				"I will not recite any digits of pi today... maybe another time."
+			}
+			else
+			{
+				genericBirthday
+			}
+		}
+		elseif bornmonth == 4
+		{
+			if bornday == 1
+			{
+				"What a funny day.\_w[1500]"
+			}
+			else
+			{
+				genericBirthday
+			}
+		}
+		elseif bornmonth == 5
+		{
+			genericBirthday
+		}
+		elseif bornmonth == 6
+		{
+			genericBirthday
+		}
+		elseif bornmonth == 7
+		{
+			if bornday == 31
+			{
+				"My brother f_lowe_y was released that in 2016. So I think that you share a birthday?"
+			}
+			else
+			{
+				genericBirthday
+			}
+		}
+		elseif bornmonth == 8
+		{
+			{
+				genericBirthday
+			}
+		}
+		elseif bornmonth == 9
+		{
+			{
+				genericBirthday
+			}
+		}
+		elseif bornmonth == 10
+		{
+			if bornday == 31
+			{
+				"Born on Halloween? How spooky!"
+			}
+			else
+			{
+				genericBirthday
+			}
+		}
+		elseif bornmonth == 11
+		{
+			if bornday == 13
+			{
+				if username == "Era" && devDebug == "ON"
+				{"All set, Developer! Happy testing!"}
+				else
+				{"Oh, you share a birthday with my Developer! What a happy coincidence!"}
+			}
+			else
+			{
+				genericBirthday
+			}
+		}
+		elseif bornmonth == 12
+		{
+			if bornday == 25
+			{
+				"Christmas is usually celebrated that day.\n Do you celebrate Christmas? My developer celebrates Yule."
+			}
+			else
+			{
+				genericBirthday
+			}
+		}
+	}
+}
+
+genericBirthday
+{
+	"\0\s[0] %(birthdayprint) of %(bornyearprint). I have recorded your data and will remember it."
+}

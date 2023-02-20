@@ -1,0 +1,8 @@
+
+profile/,nonar,noupdate
+arrow1.psd,nonar,noupdate
+balloonc.psd,nonar,noupdate
+balloons.psd,nonar,noupdate
+clickwaitmarker.psd,nonar,noupdate
+online0.psd,nonar,noupdate
+sstp.psd,nonar,noupdate

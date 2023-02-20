@@ -1,0 +1,29 @@
+//Emergency Mode Loading Protacol 
+
+charset, UTF-8
+charset.dic, UTF-8
+charset.output, UTF-8
+charset.file, UTF-8
+charset.save, UTF-8
+charset.extension, UTF-8
+
+
+//---- Dictionary Files ----
+
+
+include, system_config.txt		
+			
+dic, sbot_emergencyboot.dic	
+
+//dic, sbot_devtools.dic
+
+//dic, sbot_drawmenu.dic	
+
+
+
+
+//---- Log Location -----
+
+messagetxt,system/messagetxt/english.txt
+log, statusbot_log.log
+maxlognum,1000

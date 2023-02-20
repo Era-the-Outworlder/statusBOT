@@ -1,9 +1,12 @@
 //*****************************************************************************
+/* ############# Machine-aided Translations by Era ############# */
+// SHIORI/3.0制御スクリプト for YAYA
+// 互換処理
 // SHIORI/3.0 Control Script for YAYA
 // Compatibility processing
-// English Translation <3 Era 2021
 //*****************************************************************************
 
+// aya5.dll設定（旧）
 // aya5.dll setting (old)
 #globaldefine	AYAINFO_VERSION	0
 #globaldefine	AYAINFO_CHARSET	1
@@ -11,6 +14,7 @@
 #globaldefine	AYAINFO_NAME	3
 #globaldefine	AYAINFO_AUTHOR	4
 
+// 旧互換性保持のためのシステム関数補完（読み替えのみで対応可能なもの）
 // Completion of system functions to maintain old compatibility (those that can be supported only by replacement)
 #globaldefine	SETSEPARATOR	SETDELIM
 #globaldefine	TONUMBER2		TOINT
@@ -30,15 +34,18 @@
 #globaldefine	CALLBYNAME		EVAL
 
 //******************************************************************************
-// Statement Version 4 System function / system variable complement
+//文 version 4 システム関数 / システム変数の補完
+//汎用関数
+
+// Aya Version 4 System function / system variable complement
 // Generic function
 //******************************************************************************
 
 ASC
 {
-	if !_argc;                              " "
-	elseif GETTYPE(_argv[0]) != 1;          " "
-	elseif _argv[0] < 0 || _argv[0] > 0x7f; " "
+	if !_argc;                              ' '
+	elseif GETTYPE(_argv[0]) != 1;          ' '
+	elseif _argv[0] < 0 || _argv[0] > 0x7f; ' '
 	else;                                   CHR(_argv[0])
 }
 
@@ -82,6 +89,8 @@ ISINTEGER
 
 
 //******************************************************************************
+//Aya version 4 システム関数 / システム変数の補完
+//REQ系関数
 // Statement Version 4 System function / system variable complement
 // REQ function
 //******************************************************************************
@@ -93,17 +102,21 @@ REQ.KEY
 	if !_argc; return
 
 	switch GETTYPE(_i = _argv[0]) {
+		// エラー
 		// Error
-		""
+		''
 
+		// 位置指定
 		// Position specification
 		var.req.key[_i];
 
+		// 位置指定（実数）　整数化して処理
 		// Position specification (real number) Integerize and process
 		var.req.key[TOINT(_i)]
 
+		// 文字列はエラー
 		// String error
-		""
+		''
 	}
 }
 
@@ -121,15 +134,19 @@ REQ.VALUE
 	if !_argc; return
 
 	switch GETTYPE(_i = _argv[0]) {
+		// エラー
 		// Error
-		""
+		''
 
+		// 位置指定
 		// Position Specification
 		var.req.value[_i];
 
-		// Position Specification(real number) processed as an integer
+		// 位置指定（実数）　整数化して処理
+		// Position Specification (real number) processed as an integer
 		var.req.value[TOINT(_i)]
 
+		// 名前指定
 		// Naming
 		{
 			_sz = ARRAYSIZE(var.req.key)
@@ -144,7 +161,10 @@ REQ.VALUE
 }
 
 //******************************************************************************
-// statement version 4 system function / system variable completion
+//文 version 4 システム関数 / システム変数の補完
+//LIB系関数
+
+// Aya version 4 system function / system variable completion
 //LIB system functions
 //******************************************************************************
 LIB.KEY
@@ -152,17 +172,21 @@ LIB.KEY
 	if !_argc; return
 
 	switch GETTYPE(_i = _argv[0]) {
+		// エラー
 		// Error
-		""
+		''
 
+		// 位置指定
 		// Position Specification
 		var.lib.key[_i];
 
+		// 位置指定（実数）　整数化して処理
 		// Position Specification(real number) processed as an integer
 		var.lib.key[TOINT(_i)]
 
+		// 文字列はエラー
 		// String Error
-		""
+		''
 	}
 }
 
@@ -180,15 +204,19 @@ LIB.VALUE
 	if !_argc; return
 
 	switch GETTYPE(_i = _argv[0]) {
+		// エラー
 		// Error
-		""
+		''
 
+		// 位置指定
 		// Position Specification
 		var.lib.value[_i];
 
+		// 位置指定（実数）　整数化して処理
 		// Position Specification(real number) processed as an integer
 		var.lib.value[TOINT(_i)]
 
+		// 名前指定
 		// Naming
 		{
 			_sz = ARRAYSIZE(var.lib.key)
@@ -205,13 +233,14 @@ LIB.VALUE
 
 
 //******************************************************************************
-// Variable/Function completion for statements version 4 and earlier
+// 文 version 4 以前の変数/関数の補完
+// Variable/Function completion for Aya version 4 and earlier
 //******************************************************************************
 restore_old_variables
 {
-    // ascii
-    ascii = IARRAY
-    for _i = 0; _i <= 0x7f; _i++ {
-        ascii ,= CHR(_i)
-    }
+	// ascii
+	ascii = IARRAY
+	for _i = 0; _i <= 0x7f; _i++ {
+		ascii ,= CHR(_i)
+	}
 }

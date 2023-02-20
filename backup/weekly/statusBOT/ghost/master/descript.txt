@@ -8,13 +8,24 @@ charset,UTF-8
 craftman, Era the Outworlder
 craftmanw, Era the Outworlder
 craftmanurl, https://era-the-outworlder.github.io/era_makes_ghosts/index.html
-homeurl,https://raw.githubusercontent.com/Era-The-Outworlder/era_makes_ghosts/main/updates/statusBOT/
+homeurl,https://raw.githubusercontent.com/Era-The-Outworlder/statusBOT/main/updates/statusBOT/
+
+// -----Readme-----
 readme, readme.txt
 readme.charset,UTF-8
 
 // -----Taskbar Icon-----
 icon, sbot.ico
 icon.minimize, sbot_min.ico
+
+// ----- Ghost Identification -----
+
+name,statusBOT
+type,ghost
+id,statusBOT
+title,Discord Rich Presence Bot
+sakura.name,statusBOT
+sakura.name2,sBOT
 
 // -----Custom Cursors-----
 // cursor,filename
@@ -37,16 +48,6 @@ shiori.cache,0
 // shiori.logo.x,16
 // shiori.logo.y,256
 // shiori.logo.align, location information
-
-
-// ----- Ghost Identification -----
-
-name,statusBOT
-type,ghost
-id,statusBOT
-title,DRP Status Bot
-sakura.name,statusBOT
-sakura.name2,sBOT
 
 //Shell allowed to override sakura/kero/char{*} names when 1
 name.allowoverride,0

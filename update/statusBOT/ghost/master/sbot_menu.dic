@@ -1,0 +1,357 @@
+﻿
+// [..       [..[........[...     [..[..     [..
+// [. [..   [...[..      [. [..   [..[..     [..
+// [.. [.. [ [..[..      [.. [..  [..[..     [..
+// [..  [..  [..[......  [..  [.. [..[..     [..
+// [..   [.  [..[..      [..   [. [..[..     [..
+// [..       [..[..      [..    [. ..[..     [..
+// [..       [..[........[..      [..  [.....   
+
+// -------- Menus --------
+//This .dic file is primarily concerned with the double-click menu.
+
+
+// ---- OnMenuRun ----
+// As you just saw above. This actually fills out the rest of the menu.
+
+OnMenuRun
+{	
+	//Main Menu
+	if reference0 == "main"
+	{
+		"%(sbot)\0\b2\![set,autoscroll,disable]" 
+		--
+		"\![*] \q[Discord Rich Presence,OnDRPMenu,menu]\n"
+		--
+		"\![*] \q[User Settings,OnMenuRun,user]\n"
+		--
+		"\![*] \q[sBOT Settings,OnMenuRun,config]\n"
+		--
+		"\![*] \q[Other Functions,OnMenuRun,function]\n[150]"
+		--
+		"%(disDate) %(disTime)\n"
+		--
+		"v%(OnGhostVer)\n"
+		--
+		if lastUpDate
+		{
+			"Last Updated: %(lastUpDate)\n"
+		}
+		else
+		{
+			"\n"
+		}
+		--
+		if reference0 == "firstboot"
+		{
+			""
+		}
+		elseif devDebug == "ON"
+		{
+			"\![*] \q[Test variable,OnTestVariable]\n"
+			--
+			"\![*] \q[Close Menu,OnMenuRun,cancel]\e"
+		}
+		else
+		{
+			"\n\![*] \q[Close Menu,OnMenuRun,cancel]\e"
+		}
+	}
+	// User Settings
+	if reference0 == "user"
+	{
+		"%(sbot)\0\b[2]\![set,autoscroll,disable]\_q" 
+		--
+		"\f[height,14]\![*](\q[Edit,OnTeachName,menu])\f[height,19]NAME:\f[height,default]\f[color,ccffff] %(username)\f[default]\n"
+		--
+		"\f[height,14]\![*](\q[Edit,OnTeachPronouns,menu])\f[height,19]PRONOUNS:\f[height,default]\n\f[color,bbffff]%(nomPro)/%(oblPro)/%(posPro)\f[default]\n"
+		--
+		"\f[height,14]\![*](\q[Edit,OnGetBirthday,menu])\f[height,19]BIRTHDAY:\f[height,default]\n\f[color,aaffff]%(birthdayprint)\f[default]\n"
+		--
+		"\![*] \q[sBOT Settings,OnMenuRun,config]\n"
+		--	
+		"\![*] \q[Main Menu,OnMenuRun,main]\n"
+		--
+		"\![*] \q[Close,OnMenuRun,cancel]"
+		--
+		if username == "Era" || username == "BetaTest"
+		{
+			"\nSet Debug? "
+			--
+			if devDebug == "ON"
+			{
+				"\f[color,#0099cc]\![*] \q[ON,OnConfigSet,eDBon] \f[color,default]--- \![*] \q[OFF,OnConfigSet,eDBoff] \f[align,left]"
+			}
+			else
+			{
+				"\![*] \q[ON,OnConfigSet,eDBon] --- \f[color,#f0099cc]\![*] \q[OFF,OnConfigSet,eDBoff]\f[color,default] \f[align,left]"
+			}
+		}
+	}
+	// Ghost Settings
+	if reference0 == "config"
+	{
+		"%(sbot)\0\b[2]\![set,autoscroll,disable]\_q" 
+		--
+		"\![*]\q[TALK Settings:,OnMenuRun,settalk] \nCurrent rate: %(talksetting) \f[size,15]Commu:%(communicateratio)%\f[default]\n[110]"
+		--
+		"\![*] \q[Audio Settings,OnMenuRun,audio]\n"
+		--
+		
+		" Confirm Recycle Bin?\n "
+		--
+		if verBalete == "ON"
+		{
+			"\f[align,center]\f[color,#0099cc] \![*]\q[ON,OnConfigSet,verBinOn]\f[color,default] ----- \![*]\q[OFF,OnConfigSet,verBinOff] \n\f[align,left]"
+		}
+		else
+		{
+			"\f[align,center]\![*]\q[ON,OnConfigSet,verBinOn] ----- \f[color,#0099cc]\![*]\q[OFF,OnConfigSet,verBinOff]\f[color,default] \n\f[align,left]"
+		}
+		--
+		" Enable Uninstall?\n "
+		--
+		if deleteshitai == "ON"
+		{
+			"\f[align,center]\f[color,#0099cc]\![*]\q[ON,OnConfigSet,deleteon]\f[color,default] ----- \![*]\q[OFF,OnConfigSet,deleteoff]\n[half] \f[align,left]"
+		}
+		else
+		{
+			"\f[align,center]\![*]\q[ON,OnConfigSet,deleteon] ----- \f[color,#0099cc]\![*]\q[OFF,OnConfigSet,deleteoff]\f[color,default] \n\f[align,left]"
+		}
+		--
+		"\![*] \q[User Settings,OnMenuRun,user]\n"
+		--
+		"\f[align,center]\![*] \q[Main Menu,OnMenuRun,main] ---------- \![*] \q[Close,OnMenuRun,cancel]"
+		--
+
+	}
+	// Audio Settings
+	if reference0 == "audio"
+	{
+		"%(sbot)\0\b[2]\![set,autoscroll,disable]\_q" 
+		--
+		"\f[align,center]--Audio Settings-- \n[150]\f[align,left]"
+		--
+		" Enable Silent Mode?\n "
+		--
+		if silentMode == "ON"
+		{
+			"\f[align,center]\f[color,#0099cc] \![*]\q[ON,OnConfigSet,silenton]\f[color,default] ----- \![*]\q[OFF,OnConfigSet,silentoff] \n[350]\f[align,left]"
+		}
+		else
+		{
+			"\f[align,center] \![*]\q[ON,OnConfigSet,silenton] ----- \f[color,#0099cc]\![*]\q[OFF,OnConfigSet,silentoff]\f[color,default] \n[200] \f[align,left]"
+			--
+			"\f[align,center] \q[Set Volume,OnConfigSet,volumeslider] | Currently: %(volume) \n[150]\f[align,left]"
+		}
+		--
+		"\f[align,center]\![*] \q[Main Menu,OnMenuRun,main] ---------- \![*] \q[Close,OnMenuRun,cancel]"
+	}
+	// Functions
+	if reference0 == "function"
+	{
+		"%(sbot)\0\b2Listing Functions:\n[150]"
+		
+		--
+		"\![*] \q[Open Calendar,OnMenuRun,calendar]\n/
+		\![*] \q[Check Email,OnMenuRun,email]\n/
+		\![*] \q[Open SSP Preferences,OnMenuRun,sspconfig]\n/
+		\![*] \q[Empty Recycle Bin,OnRecycleStart]\n/
+		\![*] \q[System Information,OnRunCPUID]\n/
+		\![*] \q[View Ghost Changelog,OnChangeLog,menu]\n/
+		\![*] \q[Main Menu,OnMenuRun,main]\n"
+		--
+		if devDebug == "ON"
+		{
+			"\f[align,center]\![*] \q[Test variable,OnTestVariable] \![*]"
+		}
+		else
+		{
+			"\e"
+		}
+	}
+	if reference0 == "settalk"
+	{
+		"%(sbot)\b2\0"
+		--
+		"I do not have much to say, but I can, if you want.\nHow often would you like me to talk?\_w[500]"
+		--
+		"\0\c\n/
+		\![*] \q[ Don't Talk,OnTalkSet,never]\n/
+		\![*] \q[ Every 15 minutes,OnTalkSet,fifteen]\n/
+		\![*] \q[ Every 30 minutes,OnTalkSet,thirty]\n"
+		--
+		'\![*] \q[ Custom Time,"script:\![open,sliderinput,OnTalkSet,,%(minutetalk),0,60]"]\n'
+		--
+		"\![*] \q[ Random Time,OnTalkSet,random]\n[150]"
+		'\![*] \q[ Change Communication rate,"script:\![open,sliderinput,OnCommuSet,,%(communicateratio),0,100]"]'
+		"\![*] \q[ Cancel,OnTalkSet,stay]"
+
+	}
+	if reference0 == "calendar"
+	{
+		"%(sbot)Opening Calendar.\![open,calendar]"
+	}
+	if reference0 == "sspconfig"
+	{
+		"%(sbot)Opening the SSP preferences menu.\![open,configurationdialog]"
+	}
+	if reference0 == "email"
+	{
+		"\![biff]\e"
+	}
+	if reference0 == "other"
+	{
+	
+	}
+	if reference0 == "cancel"
+	{
+		"%(sbot)Closing Menu...\e"
+	}
+}
+
+OnConfigSet
+{
+	case reference0
+	{
+		when "eDBon"
+		{
+			devDebug = "ON"
+			"\![raise,OnMenuRun,user]"
+		}
+		when "eDBoff"
+		{
+			devDebug = "OFF"
+			"\![raise,OnMenuRun,user]"
+		}
+		when "verBinOn"
+		{
+			verBalete = "ON"
+			"\![raise,OnMenuRun,config]"
+		}
+		when "verBinOff"
+		{
+			verBalete = "OFF"
+			"\![raise,OnMenuRun,config]"
+		}
+				when "deleteon"
+		{
+			deleteshitai = "ON"
+			"\![raise,OnMenuRun,config]"
+		}
+		when "deleteoff"
+		{
+			deleteshitai = "OFF"
+			"\![raise,OnMenuRun,config]"
+		}
+		when "silenton"
+		{
+			silentMode = "ON"
+			"\![raise,OnMenuRun,audio]"
+		}
+		when "silentoff"
+		{
+			silentMode = "OFF"
+			"\![raise,OnMenuRun,audio]"
+		}
+		when "volumeslider"
+		{
+			"\C\![open,sliderinput,OnSetVolume,,%(volume),1,100]"
+		}
+	}
+}
+
+OnSetVolume
+{
+	volume = reference0
+	"\![raise,OnMenuRun,audio]"
+}
+
+OnTalkSet
+{
+	"I will talk"
+	--
+	case reference0
+	{
+		when "never"
+		{
+			minutetalk = 0
+			talksetting = "never"
+			aitalkinterval = 0
+			
+			"... Never, actually."
+		}
+		when "fifteen"
+		{
+			minutetalk = 15
+			talksetting = "15 minutes"
+			aitalkinterval = 900
+			
+			" every 15 minutes."
+		}
+		when "thirty"
+		{
+			minutetalk = 30
+			talksetting = "30 minutes"
+			aitalkinterval = 1800
+			
+			" every 30 minutes."
+		}
+		when "random"
+		{
+			minutetalk = (RAND(60) + 1)
+			talksetting = "%(minutetalk) minutes"
+			aitalkinterval = (minutetalk * 60)
+			
+			" every %(minutetalk) minutes."
+		}
+		when "stay"
+		{
+			" as I was before, then.."
+			--
+			"\![raise,OnMenuRun,settalk]"
+		}
+		others
+		{
+			minutetalk = reference0
+			if minutetalk != 0
+			{
+				talksetting = "%(minutetalk) minutes"
+				aitalkinterval = (minutetalk * 60)
+				
+				" every %(minutetalk) minutes."
+			}
+			else
+			{
+				talksetting = "never"
+				aitalkinterval = 0
+				
+				"... Never, actually. Strange..."
+			}
+		}
+	}
+	--
+	"\n\nWould you like me to try to talk to other ghosts, and if so what percentage of my speech?\n"
+	--
+	"\f[align,center]\q[No,OnCommuSet,0] ------ "
+	--
+	'\q[Yes,"script:\![open,sliderinput,OnCommuSet,,%(communicateratio),0,100]"]'
+}
+
+OnCommuSet
+{
+	communicateratio = reference0
+	"%(sBOT)I will talk to other ghosts %(communicateratio)% of the time."
+}
+
+
+
+
+//---- OnChoiceTimeout ----
+// Called every time a choice is timed out, not just the main menu.
+
+OnChoiceTimeout
+ {
+	"\n\n\n... \n\n\f[size,13]\f[align,center]maybe %(nomPro) forgot..?\f[default]\e"
+ }

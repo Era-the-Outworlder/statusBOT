@@ -1,0 +1,9 @@
+﻿// ---- Install.TXT ----
+
+charset,UTF-8
+type,ghost
+name,statusBOT
+directory,statusBOT
+
+balloon.directory,crt_heart
+balloon.source.directory,crt_heart

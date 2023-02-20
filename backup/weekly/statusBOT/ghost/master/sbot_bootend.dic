@@ -19,23 +19,22 @@ OnFirstBoot
 	
 	OnNotifyUserInfo
 	--
-	On_basewareversion
-	--
- 	lastTalk = "" //This is part of how chained conversations work (see aitalk.dic).
 	passmin = 0 
-	passsec = 0 // These two keep track of the time.
+	passsec = 0 
 	passhour = 0
- 	mikireflag = 0	// mikireflag tracks if character is cut off by screen border
+ 	
+	offscreenflag = ""
 	communicateratio = 0 // how often ghost will initiate commu with other ghosts
  	aitalkinterval = 300 //Their default talk rate in seconds.
  	talksetting = "5 minutes" //How the value aitalkinterval will display in the config menu.
-	nowshell = "master" //init as default shell
+	
 	deleteshitai = "OFF" //Sets whether or not the user can uninstall the ghost to "OFF".
+	
 	username = "" //This sets a temporary name for the user.
 	birthdayprint = "" //A temporary value for the user's birthday.
 	devDebug = "OFF"
-	//wisott
 	installinfo = ("%(year)","%(month)","%(day)","%(hour)","%(minute)","%(second)","%(OnGhostVer)")
+	
 	// Custom options
 	silentMode = "OFF" //does not start in silent mode
 	volume = 100
@@ -126,7 +125,7 @@ OnBoot
 	{
 				"%(sbot)It is %(bornmonthprint) %(borndayprint).\_w[500]\nHappy birthday, %(username)." 
 				--
-				"\![timerraise,20000,1,OnDiscordPluginCustom]\e"
+				"\![timerraise,10000,1,OnDiscordPluginCustom]\e"
 				
 	}
 	else
@@ -360,7 +359,10 @@ OnBasewareUpdated
 {
 	"%(pwrON)\_w[500]Update complete.\_w[1000]"
 	--
-	OnDiscordPluginCustom
+	if DRP_priority == 1
+	{
+		OnDiscordPluginCustom
+	}
 }
  //--------State Changing--------
  //From here on, most of the dialogue will have to do with changing shells, ghosts, or states in some way.
@@ -368,7 +370,7 @@ OnBasewareUpdated
  
  //----OnWindowStateMinimize
 
-//This will run when you minimize them.
+//This will run when you minimize them. aaaaaa
 
 OnWindowStateMinimize
 {
@@ -428,7 +430,10 @@ OnGhostChanged
 	hourlyArray = IARRAY
 	"%(pwrON)\![set,otherghosttalk,true]\0\s[0]" //this sets up their default poses
 	--
-	OnDiscordPluginCustom
+	if DRP_priority == 1
+	{
+		OnDiscordPluginCustom
+	}
 	--
 	if reference0 == "statusBOT" //As above, this should be the name of your ghost as in install.txt or descript.txt.
 	{
@@ -450,7 +455,10 @@ OnGhostCalled
 	hourlyArray = IARRAY
 	"%(pwrON)\![set,otherghosttalk,true]\0\s[0]" //this sets up their default poses
 	--
-	OnDiscordPluginCustom
+	if DRP_priority == 1
+	{
+		OnDiscordPluginCustom
+	}
 	--
 	"Hello %(reference2)! It is good to see you.\_w[500]\e"
 }

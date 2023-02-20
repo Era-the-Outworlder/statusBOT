@@ -34,4 +34,4 @@ dic, sbot_word.dic
 //Sets the file path of the event log. Seems to be duplicated in other parts of the program
 
 messagetxt,system/messagetxt/english.txt
-log, ayame.log
+log, statusbot_log.log
