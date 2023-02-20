@@ -1,6 +1,6 @@
 charset,OSNative
 file,developer_options.txt53a4a8c21d38f26383cafccd77faca4asize=614date=2023-02-19T21:26:12
-file,ghost/master/descript.txt2be64178c4ba57eced34c2826e87b7b4size=2260date=2023-02-19T20:00:31
+file,ghost/master/descript.txtba47090e6c16870ad485d07349a0aa2fsize=2259date=2023-02-20T14:40:51
 file,ghost/master/gomi.dll51fe9597398db01e684a0f9d52c63242size=13312date=2004-06-01T17:00:04
 file,ghost/master/mciaudior.dllb1082bccd2aac2017f7936baf2d967b3size=29696date=2003-03-13T13:23:26
 file,ghost/master/saori_cpuid.dlld13370aee8e579fe2517d789dba7c45esize=225280date=2004-04-17T16:47:18
@@ -11,7 +11,7 @@ file,ghost/master/sbot_bootend.dic1f0c8bc1db2c2e56bd39e534973445ccsize=13201d
 file,ghost/master/sbot_changelog.dic7435aaa6a3cf3a3858231fedde488e44size=1200date=2023-02-20T14:32:09
 file,ghost/master/sbot_commu.dic25aa63e58def09633a21beba59ec32d1size=6010date=2023-01-15T01:44:17
 file,ghost/master/sbot_devtools.dicb863d66de67e9b16ca159a8dfddbd12csize=5894date=2023-02-20T02:37:59
-file,ghost/master/sbot_drawmenu.dic0a8e9460bdc1fa73ab0072da2ad217d8size=6977date=2023-02-20T13:45:20
+file,ghost/master/sbot_drawmenu.dic812305ba315a6d08c818c985809f2bf4size=7206date=2023-02-20T14:40:23
 file,ghost/master/sbot_emergencyboot.dicf3b37ad0f98d6d530cf19314d454c6c1size=1573date=2022-05-01T19:04:12
 file,ghost/master/sbot_menu.dicd5287778c6c2ffe34030355eb1dab5e8size=8545date=2023-02-20T03:06:11
 file,ghost/master/sbot_min.icoa8347a4c9c696a0142cabc097814e31dsize=318date=2022-03-07T19:45:11
