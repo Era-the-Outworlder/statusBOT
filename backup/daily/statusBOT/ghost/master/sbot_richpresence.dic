@@ -75,7 +75,6 @@ DiscordCustom.UserDetail
 // Short Menu for setting DevStatus
 OnDevStatMenu
 {	
-
 	"\c\b2\n\n\_q\f[align,center]Select Development Mode:\n\n"
 	--
 	if devstate == "NONE"

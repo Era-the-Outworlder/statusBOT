@@ -10,7 +10,7 @@
 
 //---- SSP/User Draw Menu Items ----
 
-
+// For some reason this file is failing MD5 Hash Checks and I'm frustrated 
 
 On_recommendrootbutton.caption
 {
@@ -21,40 +21,44 @@ On_recommendrootbutton.caption
 
 On_sakura.recommendsites
 {
-	"Ukagaka Webring Hub"
+	"Ukagaka Webring Hub (EN)"
 	--
 	"%ASC(1)https://ukagakawebring.netlify.app/%ASC(2)"
 	--
 	
-	"Ukagaka Dream Team Wiki"
+	"Ukagaka Dream Team Wiki (EN)"
 	--
 	"%ASC(1)https://ukagakadreamteam.com/wiki/home%ASC(2)"
 	--
 	
-	"Zarla's Ghost Template Walkthrough"
+	"Zarla's Ghost Template Walkthrough (EN)"
 	--
 	"%ASC(1)http://www.ashido.com/ukagaka/walkthrough.html%ASC(2)"
 	--
 	
-	"SSP"
+	"SSP (JP)"
 	--
 	"%ASC(1)http://ssp.shillest.net/%ASC(2)"
 	--
 	
-	"UKADOC (J)"
+	"UKADOC (JP)"
 	--
 	"%ASC(1)http://ssp.shillest.net/ukadoc/manual/index.html%ASC(2)"
 	--
 	
-	"AYAYA/03 YAYA Information Wiki (J)"
+	"UKADOC Translation Project (EN)"
+	--
+	"%ASC(1)http://ssp.shillest.net/ukadoc/manual/index.html%ASC(2)"
+	--
+	
+	"AYAYA/03 YAYA Information Wiki (JP)"
 	--
 	"%ASC(1)http://emily.shillest.net/ayaya/?FrontPage%ASC(2)"
 	--
 	
-	"Disc-2 (J)"
+	"Disc-2 (JP)"
 	--
 	"%ASC(1)http://disc2.s56.xrea.com/%ASC(2)"
-	
 } 
 
 //---- The second option from the top ----
@@ -69,31 +73,33 @@ On_portalrootbutton.caption
  
 On_sakura.portalsites
 {
-	"GITHUB"
+	"Era Does Stuff"
 	--
-	"%ASC(1)https://era-the-outworlder.github.io/era_makes_ghosts/index.html/ %ASC(2)"
+	"%ASC(1)https://era-the-outworlder.github.io%ASC(2)"
+	--
+	"statusBOT on GITHUB"
+	--
+	"%ASC(1)https://github.com/Era-the-Outworlder/statusBOT%ASC(2)"
 	--
  	"Tumblr"
 	--
-	"%ASC(1)http://theoutworlder.tumblr.com %ASC(2)"
+	"%ASC(1)http://theoutworlder.tumblr.com%ASC(2)"
 	--
 	"Twitter"
 	--
-	"%ASC(1) https://twitter.com/theoutworlder %ASC(2)"
+	"%ASC(1)https://twitter.com/theoutworlder%ASC(2)"
 	--	
 	"Deviantart"
 	--
-	"%ASC(1) http://baobhan-sith.deviantart.com %ASC(2)"
+	"%ASC(1)http://baobhan-sith.deviantart.com%ASC(2)"
 	--
 	"Outworlder Affairs"
 	--
-	"%ASC(1) http://www.outworlderaffairs.com %ASC(2)"
-	
-	
+	"%ASC(1)http://www.outworlderaffairs.com%ASC(2)"
 }
 
 
-//---- Update Menu Caption ------------------
+//---- Update Menu Caption -----
  
 On_updatebutton.caption
 {
@@ -103,7 +109,7 @@ On_updatebutton.caption
 //----  Network Update URL  ------
 On_homeurl
 {
-	"https://raw.githubusercontent.com/Era-The-Outworlder/era_makes_ghosts/main/updates/statusBOT/"
+	"https://raw.githubusercontent.com/Era-The-Outworlder/statusBOT/main/update/statusBOT/"
 }
 
 
