@@ -42,7 +42,7 @@ OnMenuRun
 			"\n"
 		}
 		--
-		if reference0 == "firstboot"
+		if reference1 == "firstboot"
 		{
 			""
 		}

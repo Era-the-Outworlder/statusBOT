@@ -91,7 +91,7 @@ OnFBContinue
 	firstBoot = 0
 	"\t\c\1I'll give a brief walkthrough of my primary functions before we set your status message for the first time.\_w[2000]"
 	--
-	"\c\1If you double-click my body, the main menu will open like this- \_w[1000]\![embed,OnMenuRun,firstboot] \1\_w[3000]\n\nOr if you double-click my head, it will directly open my Discord Rich Presence Menu like this.\_w[1000]\0\c\![embed,OnDRPMenu,firstboot]\1\_w[2000]\c\n\nFrom there you can set your status message, turn on the Development Status icon and message, or set a mood for me to display on Discord.\_w[1000]"
+	"\c\1If you double-click my body, the main menu will open like this- \_w[1000]\![embed,OnMenuRun,main,firstboot] \1\_w[3000]\n\nOr if you double-click my head, it will directly open my Discord Rich Presence Menu like this.\_w[1000]\0\c\![embed,OnDRPMenu,firstboot]\1\_w[2000]\c\n\nFrom there you can set your status message, turn on the Development Status icon and message, or set a mood for me to display on Discord.\_w[1000]"
 	--
 	'\1\cClick "Change Status" to set your status for the first time, and you will be good to go!'
 	--

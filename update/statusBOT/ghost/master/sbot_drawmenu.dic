@@ -10,7 +10,7 @@
 
 //---- SSP/User Draw Menu Items ----
 
-// I have been having serious trouble getting this file to match in updates
+// For some reason this file is failing MD5 Hash Checks and I'm frustrated 
 
 On_recommendrootbutton.caption
 {
@@ -99,7 +99,7 @@ On_sakura.portalsites
 }
 
 
-//---- Update Menu Caption ------------------
+//---- Update Menu Caption -----
  
 On_updatebutton.caption
 {
