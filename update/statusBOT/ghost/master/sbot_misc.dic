@@ -9,14 +9,6 @@
 
 // -------- Miscellaneous Functions --------
 
-// ---- Username ----
-// I'm not sure if this function is necessary at all, but I haven't tossed it yet.
-On_username
-{
-	username
-}
-
-
 // ---- OnKeyPress ----
 // This defines the hotkeys your ghost will use.
  
@@ -96,12 +88,6 @@ SANITISE
 	
 	"%(_clean)"
 }
-
-
-
-
-
-
 
 //---- Get other active ghost names ----
 On_otherghostname
@@ -221,20 +207,22 @@ OnRecycleStart
 	{
 		"\0%(sbot)There are %(_binNum) items, using %(_binDisplay)%(_type) of space. \_w[1000]\n/
 		 Proceed?\n/
-		\![*] \q[Yes,RecycleEmpty] \n \n[-100]\f[align,center]----\n \n[-100]\f[align,right] \![*] \q[No,RecycleCancel]\n[150]\f[align,left]"
+		\![*] \q[Yes,OnRecycle,empty] \n \n[-100]\f[align,center]----\n \n[-100]\f[align,right] \![*] \q[No,OnRecycle,cancel]\n[150]\f[align,left]"
 	}
 }
 	
-
-Select.RecycleEmpty
+OnRecycle
 {
-	"%(sbot)Emptying Bin... \_w[1000]\_w[1000]\![raise,OnRecycleBinEmptied]"	
+	if reference0 == "empty"
+	{
+		"%(sbot)Emptying Bin... \_w[1000]\_w[1000]\![raise,OnRecycleBinEmptied]"
+	}
+	if reference0 == "cancel"
+	{
+		"%(sbot)Ok. I will just leave it alone then.\e"
+	}
 }
 
-Select.RecycleCancel
-{	
-	"%(sbot)Ok. I will just leave it alone then.\e"
-}
 
 OnRecycleBinEmptied
 {	
@@ -270,10 +258,10 @@ OnFileDrop2
 			Wallpaperfile = reference0
 			
 			" FILE %(_filename)%(_fileext). Wallpaper?\n[150]/
-			\q[Centered,SetWallpaper_0]\n/
-			\q[Tiled,SetWallpaper_1]\n/
-			\q[Stretched,SetWallpaper_2]\n[150]/
-			\q[No thanks,SetWallpaper_Cancel]\e"
+			\q[Centered,OnSetWallpaper,center]\n/
+			\q[Tiled,OnSetWallpaper,tile]\n/
+			\q[Stretched,OnSetWallpaper,stretch]\n[150]/
+			\q[No thanks,OnSetWallpaper,cancel]\e"
 		}
 		when ".mid", ".wav", ".mp3", ".wma", ".au", ".ogg" //Audio file formats
 		{
@@ -288,22 +276,26 @@ OnFileDrop2
 
 //This set of options sets the wallpaper up.
 
-Select.SetWallpaper_0
+OnSetWallpaper
 {
-	"\![set,wallpaper,%(Wallpaperfile),center] Centered.\e"
+	if reference0 == "center"
+	{
+		"\![set,wallpaper,%(Wallpaperfile),center] Centered.\e"
+	}
+	if reference0 == "tile"
+	{
+		"\![set,wallpaper,%(Wallpaperfile),tile] Tiled.\e"
+	}
+	if reference0 == "center"
+	{
+		"\![set,wallpaper,%(Wallpaperfile),stretch] Stretched.\e"
+	}
+	if reference0 == "center"
+	{
+		"Operation Cancelled.\e"
+	}
 }
-Select.SetWallpaper_1
-{
-	"\![set,wallpaper,%(Wallpaperfile),tile] Tiled.\e"
-}
-Select.SetWallpaper_2
-{
-	"\![set,wallpaper,%(Wallpaperfile),stretch] Stretched.\e"
-}
-Select.SetWallpaper_Cancel
-{
-	"Operation Cancelled.\e"
-}
+
 
 
  //---- OnInstallBegin ----
@@ -325,29 +317,24 @@ OnInstallComplete
  	{	
 		if reference1 == "hypothetical" //This is the name of the shell defined in descript.txt in the shell folder.
 		{
-		"A hypothetical shell.\e"
-		//Replace if needed.
+		"A hypothetical shell."
 		}
 		else //For any other shell they may install.
 		{
-		"New Shell: %(reference1).\e"
-		//%(reference1) here would be the name of the shell they installed. Replace if needed.
+		"New Shell: %(reference1)."
 		}
  	}
 	elseif reference0 == "ghost" //if the type of the file they're installing is a ghost.
  	{
-		"New Ghost.\_w[500] Installed %(reference1).\e"
-		//Reference1 here would be the name of the ghost. Replace as needed.
+		"New Ghost.\_w[500] Installed %(reference1)."
  	}
 	elseif reference0 == "balloon" //if the type of file is a balloon
  	{
-		"New Balloon.\_w[500] Name: %(reference1).\e"
-		//Reference1 here would be the name of the balloon. Replace as needed.
+		"New Balloon.\_w[500] Name: %(reference1)."
  	}
 	elseif reference0 == "plugin" //if the type of file is a plug-in, like a saori of some kind.
  	{
-		"Installed plug-in %(reference1).\e"
-		//Reference1 here would be the name of the plug-in. Replace as needed.
+		"Installed plug-in %(reference1)."
  	}
 }
 
@@ -376,8 +363,6 @@ OnInstallFailure
 OnInstallRefuse
  {
 	"%(sbot)I cannot install this, but maybe %(reference0) can.\_w[500]"
-	
-	//reference0 in this function refers to the ghost this file is associated with, probably the name of the ghost listed in its install.txt file. You would see this if you dropped a shell made for a different ghost on your current ghost, for example.
  }
 
 
@@ -631,7 +616,7 @@ OnUpdate.OnDownloadBegin
 		
  	if "aitalk" _in_ reference0 //this is checking to see what kind of files are being downloaded. In this case, it's looking for files called aitalk in the download queue.
 	{
-		"The Developer has given me new things to say. \_w[500]\e"
+		"\nThe Developer has given me new things to say. \_w[500]\e"
 	}
 	else //for files not specified above
 	{
@@ -688,10 +673,9 @@ OnUpdateComplete
 }
 
 
-Select.NoChangelog
+NoChangelog
 {
-	
-		"%(sbot)OK. You can view it anytime from my Functions menu.\_w[500]\e"
+	"%(sbot)OK. You can view it anytime from my Functions menu.\_w[500]\e"
 }
 
 
@@ -707,7 +691,7 @@ OnUpdateFailure
 	}
  	elseif reference0 == "md5 miss" 
 	{
-		"MD5 hash check failed. \_w[500]\e"
+		"MD5 hash check failed. Something is wrong with the %(CHR(34))%(_file)%(CHR(34)) file. \nReport bug to bugreport(at)outworlderaffairs.com\_w[500]\e"
  	}
 	else //for other errors
  	{
