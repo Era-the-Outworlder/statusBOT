@@ -10,23 +10,31 @@
 
 OnGhostVer
 {
-	"1.0.1"
+	"1.1.0"
 }
 
 OnChangeLog
 {
-	"\![set,autoscroll,disable]\_q\b2\_l[90]\n/
-
-	--Version 1.0.1--\n\n/
-	-Added volume controls for sound\n\n/
-	
-	--Version 1.0.0--\n\n/
-	-Initial release\n\n"
+	"\![set,autoscroll,disable]\_q\b2\_l[90]\n"
+	--
+	"--Version 1.1.0--\n[110]/
+	-Menu rebuild\n[110]/
+	-Added volume controls for sound\n[110]/
+	-YAYA version update and related aitalk changes\n[110]/
+	-replace mikiretalk with OnOfscreen\n[110]/
+	-so much frustration\n[150]"
+	--
+	"--Version 1.0.1--\n[110]/
+	-Minor bugfix\n[110]/
+	-Change of update URL\n[150]"
+	--
+	"--Version 1.0.0--\n[110]/
+	-Initial release\n[150]"
 	
 	--
 	if reference0 == "menu" //Checks to see if the user came here from the functions menu
 	{
-		"\![*]\q[Done,]\n\![*]\q[Back to Functions,OnFunctionMenu]\e"
+		"\![*]\q[Done,]\n\![*]\q[Back to Functions,OnMenuRun,function]\e"
 	}
 	elseif reference0 == "update"
 	{"\n\![*]\q[Close,]\e"}

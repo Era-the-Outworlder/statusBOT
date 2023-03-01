@@ -11,7 +11,7 @@
 USER
 {
 	"%(username)"
-	"User"
+	"USER"
 }
 
 OnNotifyUserInfo
