@@ -1,8 +1,8 @@
 // ---- Developer Options ----
 
 updates.txt,nonar,noupdate
-updates.dau,nonar,noupdate
-updates.dau.bak,nonar,noupdate
+updates2.dau,nonar,noupdate
+updates2.dau.bak,nonar,noupdate
 
 
 ghost/master/profile/,nonar,noupdate
